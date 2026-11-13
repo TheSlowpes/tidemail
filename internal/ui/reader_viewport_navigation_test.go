@@ -101,7 +101,7 @@ func TestReaderViewportLinksTransition(t *testing.T) {
 
 func TestReaderViewportWithoutLinks(t *testing.T) {
 	m := readerFocusFixture(t, false)
-	for i := 0; i < 200; i++ {
+	for range 200 {
 		next, _ := m.Update(tea.KeyMsg{Type: tea.KeyDown})
 		m = next.(Model)
 	}

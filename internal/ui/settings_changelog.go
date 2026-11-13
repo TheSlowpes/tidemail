@@ -35,7 +35,7 @@ type changelogBlock struct {
 func parseChangelog(src string) []changelogBlock {
 	var blocks []changelogBlock
 	started := false
-	for _, raw := range strings.Split(strings.ReplaceAll(src, "\r\n", "\n"), "\n") {
+	for raw := range strings.SplitSeq(strings.ReplaceAll(src, "\r\n", "\n"), "\n") {
 		line := strings.TrimRight(raw, " \t")
 		switch {
 		case strings.HasPrefix(line, "## "):

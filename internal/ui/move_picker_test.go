@@ -171,7 +171,7 @@ func TestMovePickerPathStaysOnOneLine(t *testing.T) {
 	m.movePicker = movePicker{accountName: "Claude Test account", currentPath: "INBOX"}
 	chrome := newManagerChrome(74, m.styles.Theme, false)
 	view := ansi.Strip(m.renderMovePicker(74, 20, chrome))
-	first := strings.Split(view, "\n")[0]
+	first, _, _ := strings.Cut(view, "\n")
 	if !strings.Contains(first, "Claude Test account / INBOX") {
 		t.Fatalf("path line wrapped: first line %q", first)
 	}

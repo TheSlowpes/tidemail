@@ -197,7 +197,7 @@ func (w listPerfOutput) Write(b []byte) (int, error) {
 	text := ansi.Strip(string(b))
 	w.s.mu.Lock()
 	defer w.s.mu.Unlock()
-	for _, line := range strings.Split(text, "\n") {
+	for line := range strings.SplitSeq(text, "\n") {
 		if strings.Contains(line, "→") && strings.Contains(line, w.s.finalTitle) {
 			w.s.terminal = now
 		}
@@ -385,7 +385,7 @@ func BenchmarkExpandedConversation(b *testing.B) {
 			m.applyFilter()
 			m.messageCursor = 0
 			m.toggleCurrentConversation()
-			for i := 0; i < 2; i++ {
+			for i := range 2 {
 				m.messageCursor = i
 				m.setViewportForCurrentRow()
 			}

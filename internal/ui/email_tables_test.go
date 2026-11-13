@@ -57,7 +57,7 @@ func TestReceiptRenderingWideAndNarrow(t *testing.T) {
 					t.Fatalf("width=%d plain=%t: expected %q once:\n%s", width, plain, want, got)
 				}
 			}
-			for _, line := range strings.Split(got, "\n") {
+			for line := range strings.SplitSeq(got, "\n") {
 				if ansi.StringWidth(line) > width {
 					t.Fatalf("width=%d overflow: %q", width, line)
 				}
@@ -73,7 +73,7 @@ func TestReceiptRenderingWideAndNarrow(t *testing.T) {
 					t.Fatalf("expected columns:\n%s", got)
 				}
 				var amountEnd int
-				for _, line := range strings.Split(got, "\n") {
+				for line := range strings.SplitSeq(got, "\n") {
 					if strings.Contains(line, "$") {
 						end := ansi.StringWidth(strings.TrimRight(line, " "))
 						if amountEnd != 0 && amountEnd != end {
@@ -144,7 +144,7 @@ func TestRenderedTableTextHasPaneBackground(t *testing.T) {
 		t.Fatalf("table not rendered: %q", ansi.Strip(out))
 	}
 	bgSGR := regexp.MustCompile(`(^|;)48;`)
-	for _, line := range strings.Split(out, "\n") {
+	for line := range strings.SplitSeq(out, "\n") {
 		bg := false
 		for i := 0; i < len(line); {
 			if line[i] == 0x1b {

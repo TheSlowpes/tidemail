@@ -218,7 +218,7 @@ func TestComposeRoutedStatusModeSwitchAndNativeMessages(t *testing.T) {
 
 func TestComposeMaximizeHeaderStateAndHints(t *testing.T) {
 	preserveComposeEditorState(t)
-	for field := composeFieldFrom; field < composeFieldCount; field++ {
+	for field := range composeFieldCount {
 		m := composeEventModel(120, 50, false)
 		m.compose.focusedField = field
 		m.compose.toInput.SetValue(longRecipients)
@@ -252,7 +252,7 @@ func TestComposeMaximizeNavigation(t *testing.T) {
 	m.compose.bodyInput.SetValue(strings.Repeat("short line\n", 200))
 	m.sizeCompose()
 	// Start away from the document edge, where resizing naturally clamps the last page.
-	for i := 0; i < 40; i++ {
+	for range 40 {
 		m.compose.bodyInput, _ = m.compose.bodyInput.Update(tea.KeyMsg{Type: tea.KeyUp})
 	}
 	cursor := m.compose.bodyInput.ed.CursorIndex()
@@ -265,7 +265,7 @@ func TestComposeMaximizeNavigation(t *testing.T) {
 		}
 		next, _ = m.Update(tea.WindowSizeMsg{Width: size[0], Height: size[1]})
 		m = next.(Model)
-		for i := 0; i < 20; i++ {
+		for range 20 {
 			next, _ = m.Update(tea.KeyMsg{Type: tea.KeyUp})
 			m = next.(Model)
 		}
@@ -314,7 +314,7 @@ func TestComposeStaticCursorAndBackdrop(t *testing.T) {
 		}
 	}
 	// A repeat burst must consume every key without creating blink commands.
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		c, cmd, _ := m.compose.Update(tea.KeyMsg{Type: tea.KeyBackspace}, m.keys)
 		m.compose = c
 		if cmd != nil {

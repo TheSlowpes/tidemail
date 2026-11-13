@@ -286,13 +286,15 @@ func composeKeyGrid(rows [][]composeHint, width int, chrome managerChrome) []str
 
 	lines := make([]string, len(grid))
 	for r, row := range grid {
-		line := base.Render("  ")
+		var line strings.Builder
+		line.WriteString(base.Render("  "))
 		cursor := 0
 		for _, c := range row {
-			line += base.Render(strings.Repeat(" ", c.at-cursor)) + c.text
+			line.WriteString(base.Render(strings.Repeat(" ", c.at-cursor)))
+			line.WriteString(c.text)
 			cursor = c.at + c.w
 		}
-		lines[r] = padStyled(line, width, chrome.baseBg)
+		lines[r] = padStyled(line.String(), width, chrome.baseBg)
 	}
 	return lines
 }

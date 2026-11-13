@@ -259,7 +259,7 @@ func (m Model) renderPluginCatalog(width int, chrome managerChrome) string {
 
 	var rows []string
 	wrap := func(style lipgloss.Style, s string) {
-		for _, line := range strings.Split(ansi.Wrap(s, inner, ""), "\n") {
+		for line := range strings.SplitSeq(ansi.Wrap(s, inner, ""), "\n") {
 			rows = append(rows, style.Render(line))
 		}
 	}

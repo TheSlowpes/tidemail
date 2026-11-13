@@ -438,7 +438,7 @@ func TestComposeReplaceAllWithoutTabbing(t *testing.T) {
 
 func TestComposeHasNoGroupTitles(t *testing.T) {
 	view := ansi.Strip(NewCompose(config.AccountConfig{}, nil, nil).View(80, 30, BuildStyles(CatppuccinMocha, "compact", "square")))
-	for _, line := range strings.Split(view, "\n") {
+	for line := range strings.SplitSeq(view, "\n") {
 		if title := strings.TrimSpace(line); title == "recipients" || title == "message" {
 			t.Fatalf("group title %q still rendered", title)
 		}

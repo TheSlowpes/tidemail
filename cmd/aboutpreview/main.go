@@ -139,10 +139,10 @@ func (c *canvas) plot(x, py int, col rgb) {
 
 func (c *canvas) String() string {
 	var b strings.Builder
-	for y := 0; y < c.h; y++ {
+	for y := range c.h {
 		var lfg, lbg rgb
 		first := true
-		for x := 0; x < c.w; x++ {
+		for x := range c.w {
 			cl := c.cells[y*c.w+x]
 			if cl.ch == wideCont {
 				continue
@@ -247,7 +247,7 @@ func moon(c *canvas, ff float64, cx, cyPx int) {
 		return
 	}
 	mx, my := float64(cx), float64(cyPx)
-	for y := 0; y < 8; y++ {
+	for y := range 8 {
 		for x := cx - 9; x < cx+9; x++ {
 			d := math.Hypot(float64(x)-mx, float64(y*2+1)-my)
 			if p := c.at(x, y); p != nil && d < 9 {
@@ -276,7 +276,7 @@ func shootingStar(c *canvas, f, skyRows int, inContent func(x, y int) bool) {
 	}
 	sx := c.w/6 + int(frand(n*13+1)*float64(c.w)*0.5)
 	sy := 1 + int(frand(n*13+2)*float64(max(1, skyRows/4)))
-	for k := 0; k < 8; k++ {
+	for k := range 8 {
 		pos := cyc - k
 		x, y := sx+pos*3, sy+pos
 		if pos < 0 || y >= skyRows-1 || inContent(x, y) {
@@ -572,7 +572,7 @@ func retroBoot(c *canvas, f int) {
 		rs := []rune(ln)
 		total += len(rs)
 		n := min(len(rs), max(0, remaining))
-		for j := 0; j < n; j++ {
+		for j := range n {
 			col := green
 			if i == 0 || (strings.HasSuffix(ln, "ok") && j >= len(rs)-2) {
 				col = bright

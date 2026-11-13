@@ -80,7 +80,7 @@ func TestReaderLinksWarmCacheNavigation(t *testing.T) {
 		// Use the renderer's own color conversion, including its rounding.
 		probe := lipgloss.NewStyle().Background(m.styles.Theme.BorderFocus).Render("x")
 		background := regexp.MustCompile(`48;2;[0-9]+;[0-9]+;[0-9]+`).FindString(probe)
-		for _, raw := range strings.Split(ansi.Strip(m.viewport.View()), "\n") {
+		for raw := range strings.SplitSeq(ansi.Strip(m.viewport.View()), "\n") {
 			if strings.HasPrefix(strings.TrimSpace(raw), ">") {
 				t.Fatal("viewport cache contains selection-dependent presentation")
 			}
@@ -140,11 +140,11 @@ func TestReaderGraphicsAboveFooterPreservesLinkSelection(t *testing.T) {
 
 func TestReaderLinksScrollToSelectedEntry(t *testing.T) {
 	var html strings.Builder
-	for i := 0; i < 82; i++ {
+	for i := range 82 {
 		fmt.Fprintf(&html, `<p><a href="https://example.com/%d">Action %02d</a></p>`, i, i)
 	}
 	m := readerLinksModel(t, html.String(), "")
-	for i := 0; i < 82; i++ {
+	for i := range 82 {
 		next, _ := m.Update(tea.KeyMsg{Type: tea.KeyCtrlN})
 		m = next.(Model)
 		assertReaderLinkSelection(t, m, i)
@@ -325,7 +325,7 @@ func TestReaderLinksBeforeAttachmentsScrollToEntry(t *testing.T) {
 	if err := m.db.UpsertMessage(msg); err != nil {
 		t.Fatal(err)
 	}
-	for i := 0; i < 30; i++ {
+	for i := range 30 {
 		if _, err := m.db.SaveAttachment(msg.ID, db.Attachment{Filename: fmt.Sprintf("attachment-%02d.txt", i), ContentType: "text/plain", Data: []byte("test")}); err != nil {
 			t.Fatal(err)
 		}

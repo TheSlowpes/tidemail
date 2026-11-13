@@ -500,7 +500,7 @@ func TestDeleteSyntheticViewportMixedResults(t *testing.T) {
 	m := f.model
 	m.width, m.height = 120, 20
 	// Keep the list synthetic and in memory; the SQL cache stays empty.
-	for i := 0; i < 60; i++ {
+	for i := range 60 {
 		m.messages = append(m.messages, db.Message{ID: int64(1000 + i), MailboxID: f.source.ID,
 			Subject: fmt.Sprintf("message %d", i), Read: true, Date: time.Unix(int64(100-i), 0)})
 	}

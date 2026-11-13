@@ -16,7 +16,7 @@ func TestReaderLinkSelectionInputEquivalence(t *testing.T) {
 				t.Run(fmt.Sprintf("focus=%v/width=%d/%s", focus, width, method), func(t *testing.T) {
 					requests, apply := recordReaderActivations(t)
 					html := `<p>Ordinary body text.</p>`
-					for i := 0; i < 3; i++ {
+					for i := range 3 {
 						html += fmt.Sprintf(`<p><a href="https://same.example/%d">%s action %d</a></p>`, i, strings.Repeat("A long label 界 ", 12), i)
 					}
 					m := readerLinksModel(t, html, "")
@@ -42,7 +42,7 @@ func TestReaderLinkSelectionInputEquivalence(t *testing.T) {
 						m.selectContentLinkAt(m.contentLinkRows[2])
 						m = apply(m, tea.KeyMsg{Type: tea.KeyUp})
 					case "next":
-						for i := 0; i < 2; i++ {
+						for range 2 {
 							m = apply(m, tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'n'}, Alt: true})
 						}
 					case "previous":

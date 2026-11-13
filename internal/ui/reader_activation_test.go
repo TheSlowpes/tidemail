@@ -52,7 +52,7 @@ func TestReaderActivationOrdinaryInteractions(t *testing.T) {
 		t.Run(fmt.Sprint(focus), func(t *testing.T) {
 			requests, apply := recordReaderActivations(t)
 			m := readerActivationModel(t, focus)
-			for i := 0; i < 3; i++ {
+			for range 3 {
 				m = apply(m, tea.KeyMsg{Type: tea.KeyEnter})
 				m = apply(m, readerOpenKey)
 			}

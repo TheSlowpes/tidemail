@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
 )
 
@@ -32,18 +33,14 @@ func stubOwnerProbeWith(t *testing.T, available []string, ownerOut string, owner
 	resetOwnerCacheForTest()
 	origLook, origQuery, origWritable := lookPath, queryOwner, dirWritable
 	lookPath = func(name string) (string, error) {
-		for _, a := range available {
-			if name == a {
-				return "/usr/bin/" + name, nil
-			}
+		if slices.Contains(available, name) {
+			return "/usr/bin/" + name, nil
 		}
 		return "", fmt.Errorf("not found")
 	}
 	queryOwner = func(_ string, args ...string) (string, error) {
-		for _, arg := range args {
-			if arg == "-Qmq" {
-				return foreignOut, foreignErr
-			}
+		if slices.Contains(args, "-Qmq") {
+			return foreignOut, foreignErr
 		}
 		return ownerOut, ownerErr
 	}

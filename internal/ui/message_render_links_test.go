@@ -72,7 +72,7 @@ func TestReaderLinksFollowSuccessfulRenderer(t *testing.T) {
 			for _, filter := range []bool{false, true} {
 				m.cfg.Display.FilterLinks = filter
 				msg := db.Message{ID: 1, BodyHTML: tc.html, BodyText: tc.plain}
-				for pass := 0; pass < 2; pass++ { // cold rendering and cached result
+				for range 2 { // cold rendering and cached result
 					result := m.renderMessageForDisplay(msg, 72)
 					if !strings.Contains(ansi.Strip(result.body), tc.body) {
 						t.Fatalf("wrong displayed representation: %q", result.body)
@@ -99,12 +99,12 @@ func TestReaderMultipartNavigationUsesOnlyHTMLDestinations(t *testing.T) {
 	var targets []string
 	// Model the UNO newsletter: distinct tracking tokens in each alternative,
 	// with a footer longer than the viewport and repeated plain-text URLs.
-	for i := 0; i < 41; i++ {
+	for i := range 41 {
 		target := fmt.Sprintf("https://track.example/html?id=%d&action=view", i)
 		targets = append(targets, target)
 		fmt.Fprintf(&source, `<p><a href="%s">Newsletter action %02d</a></p>`, html.EscapeString(target), i)
 	}
-	for i := 0; i < 39; i++ {
+	for i := range 39 {
 		fmt.Fprintf(&plain, "https://track.example/plain?id=%d&action=view\n", i%36)
 	}
 	m := readerLinksModel(t, source.String(), plain.String())

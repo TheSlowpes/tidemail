@@ -137,18 +137,19 @@ func (c ComposeModel) spellPanel(width int, chrome managerChrome) string {
 		return padStyled(base.Render("  "), width, chrome.baseBg)
 	}
 	word := spans[c.spellIdx].Word
-	head := base.Foreground(chrome.muted).Render(fmt.Sprintf("  spelling %d/%d  ", c.spellIdx+1, len(spans))) +
+	var head strings.Builder
+	head.WriteString(base.Foreground(chrome.muted).Render(fmt.Sprintf("  spelling %d/%d  ", c.spellIdx+1, len(spans))) +
 		base.Foreground(chrome.errorFg).Bold(true).Render(word) +
-		base.Foreground(chrome.muted).Render("  →  ")
+		base.Foreground(chrome.muted).Render("  →  "))
 	if len(c.spellSuggest) == 0 {
-		head += base.Foreground(chrome.muted).Render("no suggestions")
+		head.WriteString(base.Foreground(chrome.muted).Render("no suggestions"))
 	}
 	for i, s := range c.spellSuggest {
 		label := fmt.Sprintf("%d %s", i+1, s)
 		if i == c.spellPick {
-			head += base.Foreground(chrome.accent).Bold(true).Render("[" + label + "]")
+			head.WriteString(base.Foreground(chrome.accent).Bold(true).Render("[" + label + "]"))
 		} else {
-			head += base.Foreground(chrome.text).Render(" " + label + " ")
+			head.WriteString(base.Foreground(chrome.text).Render(" " + label + " "))
 		}
 	}
 	keyStyle := base.Foreground(chrome.text)
@@ -160,7 +161,7 @@ func (c ComposeModel) spellPanel(width int, chrome managerChrome) string {
 	}
 	hints := base.Render("  ") + strings.Join(parts, base.Render("   "))
 	return lipgloss.JoinVertical(lipgloss.Left,
-		padStyled(head, width, chrome.baseBg),
+		padStyled(head.String(), width, chrome.baseBg),
 		padStyled(hints, width, chrome.baseBg))
 }
 

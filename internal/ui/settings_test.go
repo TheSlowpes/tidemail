@@ -934,7 +934,7 @@ func TestSettingsAboutAnimationDoesNotWrapEarly(t *testing.T) {
 	s := newSettings(config.DefaultConfig(), settingsUpdateState{})
 	s.setActiveSection(ssAbout)
 
-	for i := 0; i < 30; i++ {
+	for range 30 {
 		next, _, _ := s.Update(settingsAboutPulseMsg{}, DefaultKeys)
 		s = next
 	}
@@ -1732,7 +1732,7 @@ func TestSettingsManualInstallCopyKeySetsAction(t *testing.T) {
 // rendered screen, measured along its top border.
 func settingsOverlayWidth(t *testing.T, screen string) int {
 	t.Helper()
-	for _, line := range strings.Split(ansi.Strip(screen), "\n") {
+	for line := range strings.SplitSeq(ansi.Strip(screen), "\n") {
 		if !strings.Contains(line, "tidemail · settings") {
 			continue
 		}

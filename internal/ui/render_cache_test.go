@@ -106,7 +106,7 @@ func TestBodyCacheKeyedOnRenderInputs(t *testing.T) {
 func TestBodyCacheStaysBounded(t *testing.T) {
 	m := cacheTestModel(t)
 	width := m.contentBodyWidth()
-	for i := 0; i < defaultBodyCacheLimit+20; i++ {
+	for i := range defaultBodyCacheLimit + 20 {
 		m.renderMessageForDisplay(cacheTestMessage(int64(i+1), fmt.Sprintf("body %d", i)), width)
 	}
 	if got := m.bodyCache.len(); got != defaultBodyCacheLimit {

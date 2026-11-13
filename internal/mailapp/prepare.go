@@ -6,6 +6,7 @@ import (
 	"github.com/allisonhere/tidemail/internal/db"
 	"github.com/allisonhere/tidemail/internal/smtp"
 	"net/mail"
+	"slices"
 	"strings"
 )
 
@@ -118,12 +119,7 @@ func Allowed(cfg config.Config, capability string) bool {
 	if permissions == nil {
 		permissions = []string{"accounts.read", "messages.metadata", "messages.search", "drafts.create", "outbox.read"}
 	}
-	for _, p := range permissions {
-		if p == capability {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(permissions, capability)
 }
 
 func ValidateRecipients(value string, required bool) error {

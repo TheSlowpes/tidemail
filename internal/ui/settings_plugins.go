@@ -163,7 +163,7 @@ func renderSettingsPluginHints(width int, chrome managerChrome, pairs ...string)
 			fullWidth += lipgloss.Width(strings.ToLower(row[i] + " " + row[i+1]))
 		}
 		rendered := renderSoftHints(fullWidth, chrome, row...)
-		for _, line := range strings.Split(ansi.Wrap(rendered, max(1, width), ""), "\n") {
+		for line := range strings.SplitSeq(ansi.Wrap(rendered, max(1, width), ""), "\n") {
 			rows = append(rows, padStyled(line, width, chrome.baseBg))
 		}
 		row = nil

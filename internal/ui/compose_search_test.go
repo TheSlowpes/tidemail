@@ -69,7 +69,7 @@ func TestComposeSearchRegexAvailabilityAndSize(t *testing.T) {
 	c.bodyInput.ed.SetSearchQuery("cat")
 	for _, size := range [][2]int{{40, 18}, {60, 24}, {100, 36}} {
 		view := c.View(size[0], size[1], BuildStyles(CatppuccinMocha, "compact", "square"))
-		for _, line := range strings.Split(view, "\n") {
+		for line := range strings.SplitSeq(view, "\n") {
 			if ansi.StringWidth(line) > size[0] {
 				t.Fatalf("search overflows %v", size)
 			}

@@ -39,7 +39,7 @@ func isGroupRuleLine(line string) bool {
 func groupSegments(rendered string) []string {
 	var segments []string
 	var cur []string
-	for _, line := range strings.Split(ansi.Strip(rendered), "\n") {
+	for line := range strings.SplitSeq(ansi.Strip(rendered), "\n") {
 		if isGroupRuleLine(line) {
 			segments = append(segments, compact(strings.Join(cur, " ")))
 			cur = nil
@@ -61,7 +61,7 @@ func assertNoSentinels(t *testing.T, rendered string) {
 
 func assertWidth(t *testing.T, rendered string, width int) {
 	t.Helper()
-	for _, line := range strings.Split(rendered, "\n") {
+	for line := range strings.SplitSeq(rendered, "\n") {
 		if w := ansi.StringWidth(line); w > width {
 			t.Fatalf("line width %d exceeds %d: %q", w, width, ansi.Strip(line))
 		}

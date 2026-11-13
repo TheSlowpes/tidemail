@@ -13,7 +13,7 @@ import (
 func TestMessageHTMLPreservesLongContent(t *testing.T) {
 	var raw strings.Builder
 	raw.WriteString("<div>Opening details</div>")
-	for i := 0; i < 40; i++ {
+	for i := range 40 {
 		fmt.Fprintf(&raw, "<p>Section%02d %s</p><p>Repeated notice.</p>", i, strings.Repeat("useful information ", 10))
 	}
 	raw.WriteString("<div>Final details</div><p>You are receiving this email because you subscribed.</p>")
@@ -21,7 +21,7 @@ func TestMessageHTMLPreservesLongContent(t *testing.T) {
 		m := NewModel(nil, config.DefaultConfig(), "dev", false)
 		got := ansi.Strip(m.renderMessageForDisplay(db.Message{BodyHTML: raw.String()}, width).body)
 		last := -1
-		for i := 0; i < 40; i++ {
+		for i := range 40 {
 			marker := fmt.Sprintf("Section%02d", i)
 			pos := strings.Index(got, marker)
 			if pos <= last || strings.Count(got, marker) != 1 {
@@ -76,7 +76,7 @@ func TestMessageHTMLPreservesStructuredContent(t *testing.T) {
 					previous = pos
 				}
 				if fixture.name == "cell blocks" {
-					for _, line := range strings.Split(got, "\n") {
+					for line := range strings.SplitSeq(got, "\n") {
 						if strings.Contains(line, "First") && strings.Contains(line, "Second") {
 							t.Fatalf("merged paragraphs: %q", got)
 						}
@@ -90,7 +90,7 @@ func TestMessageHTMLPreservesStructuredContent(t *testing.T) {
 
 func assertHTMLWidth(t *testing.T, body string, width int) {
 	t.Helper()
-	for _, line := range strings.Split(body, "\n") {
+	for line := range strings.SplitSeq(body, "\n") {
 		if ansi.StringWidth(line) > width {
 			t.Fatalf("line exceeds %d columns: %q", width, line)
 		}

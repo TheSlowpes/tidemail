@@ -2,6 +2,7 @@ package db
 
 import (
 	"errors"
+	"slices"
 	"strings"
 	"time"
 )
@@ -55,12 +56,7 @@ func AttentionOf(anns []PluginAnnotation) Attention {
 }
 
 func contains(list []string, v string) bool {
-	for _, x := range list {
-		if x == v {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(list, v)
 }
 
 // signalExists is an EXISTS test for one signal on messages.id. Using EXISTS

@@ -223,7 +223,7 @@ func TestReaderSelectionDecoderBoundaries(t *testing.T) {
 			m.clearReaderMouseSelection()
 			x, y, _, _ := m.readerMouseBounds()
 			packets := [][]byte{[]byte(fmt.Sprintf("\x1b[<0;%d;%dM", x+3, y+4))}
-			for i := 0; i < 120; i++ {
+			for i := range 120 {
 				packets = append(packets, []byte(fmt.Sprintf("\x1b[<32;%d;%dM", x+5+i%50, y+5+i%8)))
 			}
 			packets = append(packets, []byte(fmt.Sprintf("\x1b[<0;%d;%dm", x+35, y+8)))

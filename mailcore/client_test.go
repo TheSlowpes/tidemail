@@ -213,7 +213,7 @@ func TestFetchInboxAndMailboxNewestFirstWithLimit(t *testing.T) {
 func TestFetchOlderMailboxPagesByUID(t *testing.T) {
 	account := startIMAP(t)
 	var all []uint32
-	for i := 0; i < 5; i++ {
+	for i := range 5 {
 		all = append(all, seed(t, account, "INBOX", fmt.Sprintf("msg %d", i), "b", false))
 	}
 	c := connect(t, account)

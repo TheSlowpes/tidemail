@@ -19,7 +19,7 @@ func TestAttachmentListPaintsHeaderAndRows(t *testing.T) {
 		{Filename: "encrypted.asc", ContentType: "application/octet-stream", Size: 4096},
 		{Filename: "signature.asc", ContentType: "application/pgp-signature", Size: 512},
 	}
-	for _, line := range strings.Split(m.renderAttachmentList(60), "\n") {
+	for line := range strings.SplitSeq(m.renderAttachmentList(60), "\n") {
 		if i := unpaintedCell(line); i >= 0 {
 			t.Fatalf("attachment line has no pane background at byte %d: %q", i, line)
 		}
@@ -44,7 +44,7 @@ func TestRenderAttachmentListNarrowWidth(t *testing.T) {
 	// is width+1.
 	for _, width := range []int{24, 40, 100} {
 		out := m.renderAttachmentList(width)
-		for _, line := range strings.Split(out, "\n") {
+		for line := range strings.SplitSeq(out, "\n") {
 			if w := ansi.StringWidth(line); w > width+1 {
 				t.Fatalf("width %d: rendered line exceeds pane (%d): %q", width, w, ansi.Strip(line))
 			}

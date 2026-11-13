@@ -104,7 +104,7 @@ func TestRenderMessageTitleSpansPaneWhenReadingWidthIsCapped(t *testing.T) {
 		Date:     time.Date(2026, 6, 1, 10, 0, 0, 0, time.UTC),
 		BodyText: "Body starts here.",
 	})
-	firstLine := strings.Split(view, "\n")[0]
+	firstLine, _, _ := strings.Cut(view, "\n")
 
 	if got, want := ansi.StringWidth(firstLine), m.contentPaneContentWidth(); got != want {
 		t.Fatalf("expected title line to span content pane width %d, got %d in %q", want, got, ansi.Strip(firstLine))
@@ -122,7 +122,7 @@ func TestContentTitlesRemoveEmojiBeforePadding(t *testing.T) {
 			"message": m.renderMessageContent(msg),
 			"thread":  m.renderThreadContent(thread),
 		} {
-			title := strings.Split(view, "\n")[0]
+			title, _, _ := strings.Cut(view, "\n")
 			want := messageListDisplayText(subject)
 			if got := strings.TrimSpace(ansi.Strip(title)); got != want {
 				t.Errorf("%s title = %q, want %q", name, got, want)
@@ -722,7 +722,7 @@ func TestRenderHTMLBodyConstrainsWideSemanticBlocks(t *testing.T) {
 
 	for _, plainUI := range []bool{true, false} {
 		got := renderHTMLBody(html, 36, CatppuccinMocha, plainUI)
-		for _, line := range strings.Split(got, "\n") {
+		for line := range strings.SplitSeq(got, "\n") {
 			if gotWidth := ansi.StringWidth(line); gotWidth > 36 {
 				t.Fatalf("plainUI=%t: expected width <= 36, got %d in %q", plainUI, gotWidth, ansi.Strip(line))
 			}
@@ -770,7 +770,7 @@ func TestWrapWordsBreaksLongURLsWithoutEllipsis(t *testing.T) {
 	if strings.Contains(got, "…") {
 		t.Fatalf("expected long URL to wrap without truncation, got %q", got)
 	}
-	for _, line := range strings.Split(got, "\n") {
+	for line := range strings.SplitSeq(got, "\n") {
 		if width := ansi.StringWidth(line); width > 32 {
 			t.Fatalf("expected wrapped line width <= 32, got %d in %q from %q", width, line, got)
 		}
@@ -792,7 +792,7 @@ func TestRenderHTMLBodyNeverExceedsContentWidthForWideBlocks(t *testing.T) {
 	}
 	// Width check: skip lines that are part of indented code blocks (glamour
 	// preserves <pre> blocks as-is; long URLs inside them may exceed width).
-	for _, line := range strings.Split(got, "\n") {
+	for line := range strings.SplitSeq(got, "\n") {
 		if strings.HasPrefix(line, "    ") || strings.HasPrefix(line, "  ") {
 			continue
 		}

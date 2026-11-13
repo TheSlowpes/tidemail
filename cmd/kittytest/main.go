@@ -14,8 +14,8 @@ import (
 func main() {
 	// Create a small 80x40 red test image (10 cols x 2.5 rows at 8x16 cell size)
 	img := image.NewRGBA(image.Rect(0, 0, 80, 40))
-	for y := 0; y < 40; y++ {
-		for x := 0; x < 80; x++ {
+	for y := range 40 {
+		for x := range 80 {
 			img.Set(x, y, color.RGBA{255, 0, 0, 255})
 		}
 	}

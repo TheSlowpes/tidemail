@@ -14,10 +14,7 @@ import (
 // on any descriptor and never leaves a goroutine holding a pending read.
 func readReady(fd int, d time.Duration) (bool, error) {
 	fds := []unix.PollFd{{Fd: int32(fd), Events: unix.POLLIN}}
-	ms := int(d / time.Millisecond)
-	if ms < 0 {
-		ms = 0
-	}
+	ms := max(int(d/time.Millisecond), 0)
 	for {
 		n, err := unix.Poll(fds, ms)
 		if errors.Is(err, unix.EINTR) {

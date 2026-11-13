@@ -111,7 +111,7 @@ func TestContactManagerFormScrollsFocusedFieldIntoView(t *testing.T) {
 
 func TestContactManagerListScrolls(t *testing.T) {
 	d := newContactTestDB(t)
-	for i := 0; i < 40; i++ {
+	for i := range 40 {
 		if _, err := d.AddContact(fmt.Sprintf("c%02d@example.com", i), "", "manual"); err != nil {
 			t.Fatal(err)
 		}
@@ -142,7 +142,7 @@ func TestContactManagerListScrolls(t *testing.T) {
 
 func TestContactManagerBulkDelete(t *testing.T) {
 	d := newContactTestDB(t)
-	for i := 0; i < 3; i++ {
+	for i := range 3 {
 		if _, err := d.AddContact(fmt.Sprintf("a%d@example.com", i), "", "manual"); err != nil {
 			t.Fatal(err)
 		}

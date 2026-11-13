@@ -85,7 +85,7 @@ func pageContentModel(t *testing.T, focusLine bool) Model {
 	m := newFocusLineModel(t)
 	m.cfg.Display.FocusLine = focusLine
 	var lines []string
-	for i := 0; i < 200; i++ {
+	for i := range 200 {
 		lines = append(lines, fmt.Sprintf("line %d", i))
 	}
 	m.viewport.Height = 20

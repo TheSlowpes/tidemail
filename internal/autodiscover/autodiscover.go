@@ -175,7 +175,7 @@ func validHost(h string) bool {
 	if h == "" || len(h) > 253 {
 		return false
 	}
-	for _, label := range strings.Split(h, ".") {
+	for label := range strings.SplitSeq(h, ".") {
 		if label == "" || len(label) > 63 || label[0] == '-' || label[len(label)-1] == '-' {
 			return false
 		}
