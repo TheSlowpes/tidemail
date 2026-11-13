@@ -23,7 +23,7 @@ func TestCopyParseFailureRecoversWithoutRepeatingCopy(t *testing.T) {
 			defer listener.Close()
 			var copies, stores atomic.Int32
 			go func() {
-				for attempt := 0; attempt < 2; attempt++ {
+				for attempt := range 2 {
 					conn, err := listener.Accept()
 					if err != nil {
 						return

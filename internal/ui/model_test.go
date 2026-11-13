@@ -666,7 +666,7 @@ func TestAccountsPaneComfortableDensityDoesNotExceedMainHeight(t *testing.T) {
 	m.height = 12
 	m.focused = paneAccounts
 	m.accounts = []db.Account{{ID: 1, Name: "Work"}}
-	for i := 0; i < 20; i++ {
+	for i := range 20 {
 		m.mailboxes = append(m.mailboxes, db.Mailbox{
 			ID:        int64(i + 1),
 			AccountID: 1,
@@ -689,7 +689,7 @@ func TestMessagesPaneComfortableDensityDoesNotExceedPaneHeight(t *testing.T) {
 	m.height = 16
 	m.focused = paneMessages
 	m.selectedMessages = make(map[int64]bool)
-	for i := 0; i < 30; i++ {
+	for i := range 30 {
 		msg := db.Message{
 			ID:      int64(i + 1),
 			Subject: fmt.Sprintf("Message %02d", i),
@@ -714,9 +714,9 @@ func TestMessagesPaneComfortableDensityDoesNotExceedPaneHeight(t *testing.T) {
 // subjectStartColumn returns the display column where needle begins on the first
 // rendered line that contains it, or -1 if no line contains it.
 func subjectStartColumn(pane, needle string) int {
-	for _, line := range strings.Split(ansi.Strip(pane), "\n") {
-		if idx := strings.Index(line, needle); idx >= 0 {
-			return lipgloss.Width(line[:idx])
+	for line := range strings.SplitSeq(ansi.Strip(pane), "\n") {
+		if before, _, ok := strings.Cut(line, needle); ok {
+			return lipgloss.Width(before)
 		}
 	}
 	return -1
@@ -740,7 +740,7 @@ func TestMessagesPaneMedalSubjectDoesNotShiftLayout(t *testing.T) {
 						m.accounts = []db.Account{{ID: 1, Name: "Work"}}
 						m.mailboxes = []db.Mailbox{{ID: 1, AccountID: 1, Name: "INBOX"}}
 
-						for i := 0; i < 20; i++ {
+						for i := range 20 {
 							subject := fmt.Sprintf("Message %02d subject text with extra words", i)
 							from := "sender@example.com"
 							starred := i%3 == 0
@@ -817,7 +817,7 @@ func TestScrollingMessageListKeepsPaneHeadersVisible(t *testing.T) {
 	m.accounts = []db.Account{{ID: 1, Name: "Work"}}
 	m.mailboxes = []db.Mailbox{{ID: 1, AccountID: 1, Name: "INBOX"}}
 	m.selectedMessages = make(map[int64]bool)
-	for i := 0; i < 30; i++ {
+	for i := range 30 {
 		msg := db.Message{
 			ID:        int64(i + 1),
 			MailboxID: 1,

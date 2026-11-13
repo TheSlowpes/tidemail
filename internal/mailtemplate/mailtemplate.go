@@ -95,7 +95,7 @@ func Parse(text string) Template {
 		return Template{Body: text}
 	}
 	t := Template{Body: body}
-	for _, line := range strings.Split(block, "\n") {
+	for line := range strings.SplitSeq(block, "\n") {
 		if k, v, ok := strings.Cut(line, ":"); ok && strings.EqualFold(strings.TrimSpace(k), "subject") {
 			t.Subject = strings.TrimSpace(v)
 		}

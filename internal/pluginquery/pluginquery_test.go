@@ -79,8 +79,7 @@ func (h *harness) must(raw string, out any) string {
 }
 
 func queryErrCode(err error) string {
-	var qe *plugin.QueryError
-	if errors.As(err, &qe) {
+	if qe, ok := errors.AsType[*plugin.QueryError](err); ok {
 		return qe.Code
 	}
 	return ""
@@ -285,7 +284,7 @@ func TestThreadsReuseThreadingAndState(t *testing.T) {
 
 func TestThreadsSameSubjectStaySeparateAndPagesAreBounded(t *testing.T) {
 	f := Fixture{Me: []string{"me@example.com"}, Accounts: []FixtureAccount{{Name: "A", Mailboxes: []FixtureMailbox{{Name: "INBOX"}}}}}
-	for i := 0; i < 7; i++ {
+	for i := range 7 {
 		f.Accounts[0].Mailboxes[0].Messages = append(f.Accounts[0].Mailboxes[0].Messages, FixtureMessage{
 			MessageID: "<h" + string(rune('a'+i)) + "@x>", From: "x@x.example", Subject: "Hello",
 			Date: testNow.Add(-time.Duration(i) * time.Hour).Format(time.RFC3339),

@@ -103,7 +103,7 @@ func htmlUnsubscribeTarget(body string) string {
 }
 
 func textUnsubscribeTarget(body string) string {
-	for _, line := range strings.Split(body, "\n") {
+	for line := range strings.SplitSeq(body, "\n") {
 		lower := strings.ToLower(line)
 		word := strings.Index(lower, "unsubscribe")
 		if word < 0 {

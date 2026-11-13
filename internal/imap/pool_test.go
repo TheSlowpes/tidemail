@@ -53,7 +53,7 @@ func TestSessionPoolReusesConnectionPerAccount(t *testing.T) {
 	p, dials := newTestPool()
 	acfg := config.AccountConfig{Name: "Acct", IMAPHost: "imap.x", User: "a@x"}
 
-	for i := 0; i < 3; i++ {
+	for range 3 {
 		if err := p.Do(context.Background(), acfg, func(c *Client) error { return nil }); err != nil {
 			t.Fatal(err)
 		}
@@ -105,10 +105,8 @@ func TestSessionPoolSerializesPerAccount(t *testing.T) {
 
 	var inFlight, maxInFlight atomic.Int32
 	var wg sync.WaitGroup
-	for i := 0; i < 8; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
+	for range 8 {
+		wg.Go(func() {
 			_ = p.Do(context.Background(), acfg, func(c *Client) error {
 				n := inFlight.Add(1)
 				if m := maxInFlight.Load(); n > m {
@@ -118,7 +116,7 @@ func TestSessionPoolSerializesPerAccount(t *testing.T) {
 				inFlight.Add(-1)
 				return nil
 			})
-		}()
+		})
 	}
 	wg.Wait()
 	if got := maxInFlight.Load(); got != 1 {

@@ -17,7 +17,7 @@ func wrappedRows(t *testing.T, word bool) []string {
 	e.SetSize(16, 6)
 	e.SetValue("hello wonderfulness today")
 	var rows []string
-	for _, row := range strings.Split(ansi.Strip(e.View()), "\n") {
+	for row := range strings.SplitSeq(ansi.Strip(e.View()), "\n") {
 		if r := strings.TrimRight(row, " "); r != "" {
 			rows = append(rows, r)
 		}

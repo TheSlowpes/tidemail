@@ -34,7 +34,7 @@ func TestRoundGlyphPillsSelection(t *testing.T) {
 			if got := ansi.Strip(out); got != pillCapLeft+tc.glyph+pillCapRight {
 				t.Fatalf("rendered %q", got)
 			}
-			for budget := 0; budget < 8; budget++ {
+			for budget := range 8 {
 				chips = layoutTags(tags, cfg.Display.TagStyle, cfg.Display.TagEnds, true, budget)
 				if chipsWidth(chips) > budget {
 					t.Fatalf("overflow at budget %d", budget)
@@ -77,7 +77,7 @@ func TestTagIconsSelectionPreviewAndFallback(t *testing.T) {
 		if len(chips) != 1 || chips[0].text != want || chips[0].color != tag.color || !chips[0].colored || chips[0].filled {
 			t.Fatalf("icon rendering: %+v", chips)
 		}
-		for budget := 0; budget < 5; budget++ {
+		for budget := range 5 {
 			if chipsWidth(layoutTags([]annotationTag{tag, tag, tag}, cfg.Display.TagStyle, cfg.Display.TagEnds, icons, budget)) > budget {
 				t.Fatalf("icons exceed budget %d", budget)
 			}

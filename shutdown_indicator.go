@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 	"sync"
 	"time"
 )
@@ -65,7 +66,8 @@ func (i *shutdownIndicator) Stop() {
 func renderShutdownFrame(frame int) string {
 	runes := []rune(shutdownMessage)
 	position := frame % (len(runes) + 5)
-	line := "\r\x1b[2K"
+	var line strings.Builder
+	line.WriteString("\r\x1b[2K")
 	for idx, r := range runes {
 		distance := idx - position
 		if distance < 0 {
@@ -75,7 +77,8 @@ func renderShutdownFrame(frame int) string {
 		red := 100 + brightness*35
 		green := 185 + brightness*17
 		blue := 205 + brightness*12
-		line += fmt.Sprintf("\x1b[38;2;%d;%d;%dm%c", red, green, blue, r)
+		fmt.Fprintf(&line, "\x1b[38;2;%d;%d;%dm%c", red, green, blue, r)
 	}
-	return line + "\x1b[0m"
+	line.WriteString("\x1b[0m")
+	return line.String()
 }

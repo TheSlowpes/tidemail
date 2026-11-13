@@ -503,7 +503,7 @@ func summarizeReleaseNotes(body string) string {
 	if body == "" {
 		return "New Tide release available."
 	}
-	for _, block := range strings.Split(body, "\n\n") {
+	for block := range strings.SplitSeq(body, "\n\n") {
 		line := strings.Join(strings.Fields(strings.TrimSpace(block)), " ")
 		if line == "" {
 			continue

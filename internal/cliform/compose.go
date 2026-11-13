@@ -798,10 +798,11 @@ func (m composeModel) buildReview() string {
 	} else if m.opts.Signature && m.account.Signature != "" {
 		body += "\n\nSignature:\n" + m.account.Signature
 	}
-	review := fmt.Sprintf("Account: %s [%s]\nFrom: %s\nTo: %s\nCC: %s\nBCC: %s\nSubject: %s\n\n%s", oneLine(m.account.Name), oneLine(m.account.ID), oneLine(smtp.AccountSender(m.account)), oneLine(m.draft.To), oneLine(m.draft.CC), oneLine(m.draft.BCC), oneLine(m.draft.Subject), safe(body))
+	var review strings.Builder
+	fmt.Fprintf(&review, "Account: %s [%s]\nFrom: %s\nTo: %s\nCC: %s\nBCC: %s\nSubject: %s\n\n%s", oneLine(m.account.Name), oneLine(m.account.ID), oneLine(smtp.AccountSender(m.account)), oneLine(m.draft.To), oneLine(m.draft.CC), oneLine(m.draft.BCC), oneLine(m.draft.Subject), safe(body))
 	for _, a := range m.draft.Attachments {
-		review += fmt.Sprintf("\nAttachment: %s (%d bytes)", oneLine(a.Filename), len(a.Data))
+		fmt.Fprintf(&review, "\nAttachment: %s (%d bytes)", oneLine(a.Filename), len(a.Data))
 	}
-	review += "\n\n"
-	return review
+	review.WriteString("\n\n")
+	return review.String()
 }

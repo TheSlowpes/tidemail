@@ -38,7 +38,7 @@ func TestSearchHistoryOrderDedupeAndPrefix(t *testing.T) {
 
 func TestSearchHistoryCapDeleteClear(t *testing.T) {
 	d := newTestDB(t)
-	for i := 0; i < MaxSearchHistory+5; i++ {
+	for i := range MaxSearchHistory + 5 {
 		if err := d.RecordSearch(fmt.Sprintf("query %d", i)); err != nil {
 			t.Fatal(err)
 		}

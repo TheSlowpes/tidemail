@@ -3,6 +3,7 @@ package plugin
 import (
 	"fmt"
 	"regexp"
+	"slices"
 	"strings"
 	"unicode/utf8"
 )
@@ -136,12 +137,7 @@ func validateCapabilities(caps []string) []error {
 
 // HasCapability reports whether the manifest declares capability.
 func (m Manifest) HasCapability(capability string) bool {
-	for _, c := range m.Capabilities {
-		if c == capability {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(m.Capabilities, capability)
 }
 
 // Setting returns the declared setting with key.
@@ -183,10 +179,8 @@ func (s SettingSpec) Resolve(stored any) any {
 		}
 	case SettingSelect:
 		if v, ok := stored.(string); ok {
-			for _, o := range s.Options {
-				if o == v {
-					return v
-				}
+			if slices.Contains(s.Options, v) {
+				return v
 			}
 		}
 	case SettingSecret:

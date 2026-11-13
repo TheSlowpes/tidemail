@@ -16,12 +16,10 @@ var exchangeRetryDelay = 1500 * time.Millisecond
 // isNetworkError reports whether err is a connection problem (no DNS answer, no route, a timeout) as opposed to an answer from the
 // provider such as invalid_grant. Only the first kind is worth trying again.
 func isNetworkError(err error) bool {
-	var answer *oauth2.RetrieveError
-	if errors.As(err, &answer) {
+	if _, ok := errors.AsType[*oauth2.RetrieveError](err); ok {
 		return false
 	}
-	var netErr net.Error
-	if errors.As(err, &netErr) {
+	if _, ok := errors.AsType[net.Error](err); ok {
 		return true
 	}
 	var urlErr *url.Error

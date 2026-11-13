@@ -265,7 +265,7 @@ func TestRedditDigestPostHyperlinksSurviveStyling(t *testing.T) {
 	// from either line.
 	for _, label := range []string{"Free ai in Omarchy?", "[Read post]"} {
 		var found string
-		for _, line := range strings.Split(got, "\n") {
+		for line := range strings.SplitSeq(got, "\n") {
 			if strings.Contains(ansi.Strip(line), label) {
 				found = line
 				break
@@ -331,7 +331,7 @@ func TestRedditDigestWrappedTitleLinksEveryLine(t *testing.T) {
 
 	const post = "https://www.reddit.com/r/omarchy/comments/1vxc6xv/free_ai_in_omarchy/"
 	titleLines := 0
-	for _, line := range strings.Split(got, "\n") {
+	for line := range strings.SplitSeq(got, "\n") {
 		plain := ansi.Strip(line)
 		if w := ansi.StringWidth(line); w > width {
 			t.Fatalf("line %q occupies %d columns, want <= %d", plain, w, width)

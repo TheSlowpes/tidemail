@@ -37,7 +37,7 @@ func readPendingModel(t *testing.T) (Model, chan struct{}, chan error) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for i := 0; i < 3; i++ {
+	for i := range 3 {
 
 		if err := database.UpsertMessage(db.Message{MailboxID: mailboxID, UID: uint32(i + 1), Subject: "Test", Date: time.Unix(int64(100-i), 0)}); err != nil {
 			t.Fatal(err)
@@ -195,7 +195,7 @@ func TestServerConfirmedReadConcurrentAndFailure(t *testing.T) {
 		t.Fatal("stale completion affected newer operation")
 	}
 	pendingRow := ""
-	for _, line := range strings.Split(m.renderMessagesPane(), "\n") {
+	for line := range strings.SplitSeq(m.renderMessagesPane(), "\n") {
 		if strings.Contains(line, m.pendingReadIndicator()+" ") {
 			pendingRow = line
 		}

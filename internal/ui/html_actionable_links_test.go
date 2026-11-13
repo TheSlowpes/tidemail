@@ -192,14 +192,14 @@ func TestReaderMailtoActionsPreserveDestinations(t *testing.T) {
 
 func TestReaderMailtoLabelsFollowViewportAndNarrowWidths(t *testing.T) {
 	var source strings.Builder
-	for i := 0; i < 40; i++ {
+	for i := range 40 {
 		fmt.Fprintf(&source, `<p><a href="mailto:workflow@example.com?subject=Action%%20%d">Review synthetic approval action %02d</a></p>`, i, i)
 	}
 	m := readerLinksModel(t, source.String(), "")
 	for _, size := range []tea.WindowSizeMsg{{Width: 80, Height: 24}, {Width: 120, Height: 32}} {
 		next, _ := m.Update(size)
 		m = next.(Model)
-		for i := 0; i < 40; i++ {
+		for range 40 {
 			next, _ = m.Update(tea.KeyMsg{Type: tea.KeyCtrlN})
 			m = next.(Model)
 			assertReaderLinkSelection(t, m, m.contentLinkIdx)
@@ -208,7 +208,7 @@ func TestReaderMailtoLabelsFollowViewportAndNarrowWidths(t *testing.T) {
 				t.Fatalf("lost bracketed label: %q", line)
 			}
 		}
-		for _, line := range strings.Split(m.renderContentLinks(m.contentBodyWidth()), "\n") {
+		for line := range strings.SplitSeq(m.renderContentLinks(m.contentBodyWidth()), "\n") {
 			if ansi.StringWidth(line) > m.contentBodyWidth() {
 				t.Fatalf("footer exceeds width: %q", line)
 			}
@@ -216,7 +216,7 @@ func TestReaderMailtoLabelsFollowViewportAndNarrowWidths(t *testing.T) {
 	}
 	// Exercise a label longer than the footer width without changing its target.
 	view := m.renderContentLinks(20)
-	for _, line := range strings.Split(view, "\n") {
+	for line := range strings.SplitSeq(view, "\n") {
 		if lipgloss.Width(line) > 20 {
 			t.Fatalf("narrow footer exceeds width: %q", line)
 		}

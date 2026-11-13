@@ -61,7 +61,7 @@ func TestChangelogEmptyBuildShowsNotice(t *testing.T) {
 func TestChangelogScrolling(t *testing.T) {
 	var sb strings.Builder
 	sb.WriteString("## v9.9.9\n\n### Added\n\n")
-	for i := 0; i < 60; i++ {
+	for i := range 60 {
 		fmt.Fprintf(&sb, "- entry number %02d\n", i)
 	}
 	SetChangelog(sb.String())

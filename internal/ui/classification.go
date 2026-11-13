@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/allisonhere/tidemail/internal/attention"
@@ -95,13 +96,7 @@ func (e *classificationEditor) setChoices(c attention.EffectiveClassification) {
 			}
 		}
 		if value != "" && value != db.ClassificationPlugin && value != db.ClassificationNone {
-			known := false
-			for _, choice := range categoryChoices {
-				if choice == value {
-					known = true
-					break
-				}
-			}
+			known := slices.Contains(categoryChoices, value)
 			if !known {
 				e.choice = len(e.choices) - 1
 			}
@@ -360,8 +355,8 @@ func (m *Model) effectiveClassificationFor(messageIDs ...int64) attention.Effect
 }
 
 func categoryKeyword(category string) string {
-	if strings.HasPrefix(category, "tag:") {
-		return strings.TrimPrefix(category, "tag:")
+	if after, ok := strings.CutPrefix(category, "tag:"); ok {
+		return after
 	}
 	switch category {
 	case "important":

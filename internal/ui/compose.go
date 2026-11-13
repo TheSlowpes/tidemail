@@ -476,7 +476,7 @@ func quotableText(m db.Message) string {
 	}
 	var out []string
 	blank := true // also trims leading blank lines
-	for _, line := range strings.Split(text, "\n") {
+	for line := range strings.SplitSeq(text, "\n") {
 		line = strings.TrimRight(line, " \t")
 		if t := strings.TrimSpace(line); imageOnlyLineRe.MatchString(t) {
 			continue
@@ -508,7 +508,7 @@ func quoteReply(body, from string) string {
 	var buf strings.Builder
 	buf.WriteString("\n\n")
 	buf.WriteString("On " + from + " wrote:\n")
-	for _, line := range strings.Split(strings.TrimRight(quoteSafe(body), "\n"), "\n") {
+	for line := range strings.SplitSeq(strings.TrimRight(quoteSafe(body), "\n"), "\n") {
 		buf.WriteString("> ")
 		buf.WriteString(line)
 		buf.WriteString("\n")
@@ -564,7 +564,7 @@ func quoteForward(body string, original db.Message) string {
 		buf.WriteString("CC: " + original.CC + "\n")
 	}
 	buf.WriteString("\n")
-	for _, line := range strings.Split(strings.TrimRight(quoteSafe(body), "\n"), "\n") {
+	for line := range strings.SplitSeq(strings.TrimRight(quoteSafe(body), "\n"), "\n") {
 		buf.WriteString("> ")
 		buf.WriteString(line)
 		buf.WriteString("\n")
@@ -1613,7 +1613,7 @@ func (c ComposeModel) viewWithBodyTop(width, height int, styles Styles) (string,
 	bgWrap := lipgloss.NewStyle().Background(bodyBg).Foreground(chrome.text)
 	pad := lipgloss.NewStyle().Background(chrome.baseBg).Render("  ")
 	var lines []string
-	for _, line := range strings.Split(raw, "\n") {
+	for line := range strings.SplitSeq(raw, "\n") {
 		// fillLineBg re-applies bodyBg after every reset so the cursor/selection
 		// styles (whose trailing \033[0m clears the background) don't punch holes.
 		lines = append(lines, pad+fillLineBg(line, bodyInputW, bgWrap)+pad)
@@ -1702,10 +1702,7 @@ func (c ComposeModel) pickerView(width, height int, chrome managerChrome) string
 	}
 
 	// File listing — fit within available height (path line + footer).
-	availH := height - lipgloss.Height(pathLine) - lipgloss.Height(hints)
-	if availH < 1 {
-		availH = 1
-	}
+	availH := max(height-lipgloss.Height(pathLine)-lipgloss.Height(hints), 1)
 
 	// Scroll offset
 	start := 0
@@ -1719,10 +1716,7 @@ func (c ComposeModel) pickerView(width, height int, chrome managerChrome) string
 	if start < 0 {
 		start = 0
 	}
-	end := start + availH
-	if end > len(shown) {
-		end = len(shown)
-	}
+	end := min(start+availH, len(shown))
 	visible := shown[start:end]
 
 	railW := 2

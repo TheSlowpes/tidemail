@@ -258,7 +258,7 @@ func TestReaderMouseSelectionAutoscrollBoundaries(t *testing.T) {
 			t.Fatal("bottom autoscroll not scheduled")
 		}
 		generation := m.readerMouse.generation
-		for i := 0; i < 3; i++ {
+		for range 3 {
 			before := m.viewport.YOffset
 			next, cmd := m.Update(readerSelectionTick(generation))
 			m = next.(Model)

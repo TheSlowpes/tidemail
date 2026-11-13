@@ -62,8 +62,8 @@ func parseFieldOperator(token string) (columns []string, value string, known boo
 	if !known {
 		return nil, "", false
 	}
-	if strings.HasPrefix(rest, "\"") {
-		rest = strings.TrimSuffix(strings.TrimPrefix(rest, "\""), "\"")
+	if after, ok := strings.CutPrefix(rest, "\""); ok {
+		rest = strings.TrimSuffix(after, "\"")
 		rest = strings.NewReplacer(`\"`, `"`, `\\`, `\`).Replace(rest)
 	}
 	return columns, strings.TrimSpace(rest), true
@@ -91,8 +91,8 @@ func ParseSearch(query string) SearchTerms {
 			continue
 		}
 		raw := strings.TrimLeft(f, "#")
-		if strings.HasPrefix(raw, "\"") {
-			tag := strings.TrimSuffix(strings.TrimPrefix(raw, "\""), "\"")
+		if after, ok := strings.CutPrefix(raw, "\""); ok {
+			tag := strings.TrimSuffix(after, "\"")
 			tag = strings.ToLower(strings.NewReplacer(`\"`, `"`, `\\`, `\`).Replace(tag))
 			if tag != "" {
 				terms.Tags = append(terms.Tags, tag)

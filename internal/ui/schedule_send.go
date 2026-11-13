@@ -123,9 +123,9 @@ func renderScheduleCalendar(selected time.Time, width int, chrome managerChrome)
 	header := lipgloss.NewStyle().Background(chrome.baseBg).Foreground(chrome.accent).Bold(true).Render(selected.Format("January 2006"))
 	weekdays := lipgloss.NewStyle().Background(chrome.baseBg).Foreground(chrome.muted).Render(" Su  Mo  Tu  We  Th  Fr  Sa")
 	rows := []string{header, weekdays}
-	for week := 0; week < 6; week++ {
+	for week := range 6 {
 		var cells strings.Builder
-		for day := 0; day < 7; day++ {
+		for day := range 7 {
 			date := gridStart.AddDate(0, 0, week*7+day)
 			label := fmt.Sprintf("%2d", date.Day())
 			style := lipgloss.NewStyle().Background(chrome.baseBg).Foreground(chrome.text)

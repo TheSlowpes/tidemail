@@ -85,11 +85,9 @@ func TestSkillInstallerConcurrentNoClobber(t *testing.T) {
 	var wg sync.WaitGroup
 	results := make(chan error, 8)
 	for i := 0; i < cap(results); i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
+		wg.Go(func() {
 			results <- installSkillFile(path, []byte(mailSkill), false)
-		}()
+		})
 	}
 	wg.Wait()
 	close(results)

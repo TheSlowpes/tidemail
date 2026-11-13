@@ -37,7 +37,7 @@ func background(t *testing.T, c lipgloss.Color) string { return sgr(t, 48, c) }
 // lineContaining returns the rendered line whose visible text contains want.
 func lineContaining(t *testing.T, view, want string) string {
 	t.Helper()
-	for _, line := range strings.Split(view, "\n") {
+	for line := range strings.SplitSeq(view, "\n") {
 		if strings.Contains(ansi.Strip(line), want) {
 			return line
 		}

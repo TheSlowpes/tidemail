@@ -631,7 +631,7 @@ func TestStaleAccountRowsAreAdoptedNotDuplicated(t *testing.T) {
 	}
 
 	// The old binary strips the ids; the new one stamps fresh ones. Twice.
-	for pass := 0; pass < 2; pass++ {
+	for pass := range 2 {
 		for i := range configs {
 			configs[i].ID = config.NewAccountID()
 		}

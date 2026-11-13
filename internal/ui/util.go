@@ -207,7 +207,7 @@ func overlayAt(base, box string, overlayX, overlayY, width, height int, bg lipgl
 	}
 
 	result := make([]string, height)
-	for y := 0; y < height; y++ {
+	for y := range height {
 		baseLine := baseLines[y]
 		boxRow := y - overlayY
 		if boxRow < 0 || boxRow >= boxH {
@@ -281,7 +281,7 @@ func blendShadowRect(base string, x, y, w, h, totalWidth, totalHeight int, page,
 	// other Render call in this app downgrades through, or a non-truecolor
 	// terminal would just drop the shadow cells' unsupported SGR codes.
 	profile := activeColorProfile()
-	for row := 0; row < sliceHeight; row++ {
+	for row := range sliceHeight {
 		for col := max(0, x); col < min(totalWidth, x+w); col++ {
 			cell := buf.Cell(col, row)
 			if cell == nil {
@@ -426,8 +426,8 @@ func cleanDisplayName(name string) string {
 
 	// Strip Gmail's [Gmail]/ prefix (also covers [Google]/ etc.)
 	cleaned := name
-	if idx := strings.Index(name, "]/"); idx >= 0 {
-		cleaned = strings.TrimSpace(name[idx+2:])
+	if _, after, ok := strings.Cut(name, "]/"); ok {
+		cleaned = strings.TrimSpace(after)
 	}
 
 	// Strip "INBOX." or "INBOX/" prefix for custom accounts
@@ -462,11 +462,11 @@ func isGmailSystemFolder(name string) bool {
 	// Gmail system labels live under the [Gmail]/ namespace on English
 	// accounts. The prefix varies by locale (e.g. [Google], [Gmail]),
 	// so we match the segment after "]".
-	idx := strings.Index(name, "]/")
-	if idx < 0 {
+	_, after, ok := strings.Cut(name, "]/")
+	if !ok {
 		return false
 	}
-	rest := strings.TrimSpace(name[idx+2:])
+	rest := strings.TrimSpace(after)
 
 	lower := strings.ToLower(rest)
 	switch lower {

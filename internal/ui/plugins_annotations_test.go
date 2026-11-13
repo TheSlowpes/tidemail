@@ -142,7 +142,7 @@ func cacheAnn(pluginID, key, value string) db.PluginAnnotation {
 // rowLine returns the rendered message-list line containing text.
 func rowLine(t *testing.T, m Model, text string) string {
 	t.Helper()
-	for _, line := range strings.Split(m.renderMessagesPane(), "\n") {
+	for line := range strings.SplitSeq(m.renderMessagesPane(), "\n") {
 		if strings.Contains(line, text) {
 			return line
 		}

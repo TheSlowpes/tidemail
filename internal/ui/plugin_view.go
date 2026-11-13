@@ -95,8 +95,8 @@ func (m Model) pluginViewLines(v *plugin.View, width int, chrome managerChrome) 
 		case plugin.BlockTable:
 			lines = append(lines, p.table(b)...)
 		case plugin.BlockText:
-			for _, l := range strings.Split(sanitizePluginText(b.Text), "\n") {
-				for _, part := range strings.Split(ansi.Wrap(l, p.width, ""), "\n") {
+			for l := range strings.SplitSeq(sanitizePluginText(b.Text), "\n") {
+				for part := range strings.SplitSeq(ansi.Wrap(l, p.width, ""), "\n") {
 					lines = append(lines, p.text().Render(part))
 				}
 			}
@@ -354,7 +354,7 @@ func stretchValues(values []float64, cols int) []float64 {
 	k := cols / len(values)
 	out := make([]float64, 0, len(values)*k)
 	for _, v := range values {
-		for j := 0; j < k; j++ {
+		for range k {
 			out = append(out, v)
 		}
 	}

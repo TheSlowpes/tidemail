@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"sort"
+	"slices"
 	"strings"
 	"testing"
 
@@ -52,15 +52,15 @@ func requestedIDs(t *testing.T, dir string) []int64 {
 	t.Helper()
 	var ids []int64
 	for _, line := range loggedRequests(t, dir) {
-		i := strings.Index(line, `"data":{"id":`)
-		if i < 0 {
+		_, after, ok := strings.Cut(line, `"data":{"id":`)
+		if !ok {
 			t.Fatalf("unexpected request %q", line)
 		}
 		var id int64
-		fmt.Sscanf(line[i+len(`"data":{"id":`):], "%d", &id)
+		fmt.Sscanf(after, "%d", &id)
 		ids = append(ids, id)
 	}
-	sort.Slice(ids, func(a, b int) bool { return ids[a] < ids[b] })
+	slices.Sort(ids)
 	return ids
 }
 
@@ -88,7 +88,7 @@ func selectIDs(m *Model, msgs []db.Message, idx ...int) []int64 {
 		m.selectedMessages[msgs[i].ID] = true
 		ids = append(ids, msgs[i].ID)
 	}
-	sort.Slice(ids, func(a, b int) bool { return ids[a] < ids[b] })
+	slices.Sort(ids)
 	return ids
 }
 

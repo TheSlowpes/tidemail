@@ -28,11 +28,9 @@ func TestWriteLockedKeepsWritesWhole(t *testing.T) {
 	const size = 8192
 	var wg sync.WaitGroup
 	for _, c := range []byte("abcdefgh") {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
+		wg.Go(func() {
 			_, _ = writeLocked(&out, bytes.Repeat([]byte{c}, size))
-		}()
+		})
 	}
 	wg.Wait()
 

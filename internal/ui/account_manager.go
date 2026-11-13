@@ -2460,7 +2460,7 @@ func (am AccountManager) viewForm(width, height int, chrome managerChrome) strin
 
 		labelCellStyle := lipgloss.NewStyle().Background(chrome.baseBg).Foreground(labelFg).Width(max(1, labelW-2)).Padding(0, 1)
 		leftLines := make([]string, 0, signatureFieldHeight)
-		for i := 0; i < signatureFieldHeight; i++ {
+		for i := range signatureFieldHeight {
 			text := ""
 			if i == 0 {
 				text = label
@@ -2469,7 +2469,7 @@ func (am AccountManager) viewForm(width, height int, chrome managerChrome) strin
 		}
 		fieldLines := strings.Split(ta.View(), "\n")
 		rightLines := make([]string, 0, signatureFieldHeight)
-		for i := 0; i < signatureFieldHeight; i++ {
+		for i := range signatureFieldHeight {
 			line := ""
 			if i < len(fieldLines) {
 				line = fieldLines[i]
@@ -2495,7 +2495,7 @@ func (am AccountManager) viewForm(width, height int, chrome managerChrome) strin
 	addControl(amFieldAliases, row("Email Alias", am.aliasesInput, amFieldAliases))
 	addHint("Comma-separated sending addresses")
 	addControl(amFieldSignature, sigRow("Signature", am.sigArea, amFieldSignature))
-	for _, line := range strings.Split(ansi.Wrap("A ⁂ symbol will mark signature placement. The signature is inserted on send. Delete it to send without a signature.", max(8, fieldW-4), ""), "\n") {
+	for line := range strings.SplitSeq(ansi.Wrap("A ⁂ symbol will mark signature placement. The signature is inserted on send. Delete it to send without a signature.", max(8, fieldW-4), ""), "\n") {
 		addHint(line)
 	}
 	addControl(amFieldSignatureHTML, row("HTML Signature", am.sigHTMLInput, amFieldSignatureHTML))
@@ -2667,8 +2667,7 @@ func (am AccountManager) updateSigPicker(msg tea.Msg, keys KeyMap) (AccountManag
 
 // shortFileError drops the path from an os error, which the form already shows.
 func shortFileError(err error) string {
-	var pe *fs.PathError
-	if errors.As(err, &pe) {
+	if pe, ok := errors.AsType[*fs.PathError](err); ok {
 		return strings.ToUpper(pe.Err.Error())
 	}
 	return strings.ToUpper(err.Error())

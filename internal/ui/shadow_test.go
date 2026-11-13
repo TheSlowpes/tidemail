@@ -31,7 +31,7 @@ func TestOverlayOnBaseShadowChangesRender(t *testing.T) {
 		if got := strings.Count(out, "\n") + 1; got != h {
 			t.Fatalf("line count = %d, want %d", got, h)
 		}
-		for _, line := range strings.Split(out, "\n") {
+		for line := range strings.SplitSeq(out, "\n") {
 			if got := lipgloss.Width(line); got != w {
 				t.Fatalf("line width = %d, want %d (%q)", got, w, ansi.Strip(line))
 			}
@@ -53,7 +53,7 @@ func TestOverlayOnBaseShadowWideRunesKeepWidth(t *testing.T) {
 	const w, h = 60, 24
 	bg := CatppuccinMocha.Bg
 	var b strings.Builder
-	for i := 0; i < h; i++ {
+	for i := range h {
 		if i%2 == 0 {
 			b.WriteString(strings.Repeat("-", w))
 		} else {

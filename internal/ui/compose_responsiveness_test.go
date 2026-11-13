@@ -39,7 +39,7 @@ func TestEditorResizesWithoutChangingBody(t *testing.T) {
 		e.SetSize(width, 30)
 		e.Blur()
 		view := ansi.Strip(e.View())
-		for _, line := range strings.Split(view, "\n") {
+		for line := range strings.SplitSeq(view, "\n") {
 			if ansi.StringWidth(line) > width {
 				t.Fatalf("width %d: overflowing line %q", width, line)
 			}

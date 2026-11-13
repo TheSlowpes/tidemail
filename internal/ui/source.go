@@ -175,7 +175,7 @@ func sourceDisplayLines(raw string, width int) []string {
 	raw = strings.ReplaceAll(raw, "\r\n", "\n")
 	raw = strings.TrimSuffix(raw, "\n")
 	var out []string
-	for _, line := range strings.Split(raw, "\n") {
+	for line := range strings.SplitSeq(raw, "\n") {
 		var b strings.Builder
 		col := 0
 		for _, r := range line {

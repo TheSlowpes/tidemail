@@ -202,7 +202,7 @@ func renderQuoteRun(lines []string, width int, th Theme, plainUI bool) string {
 		} else {
 			wrapped = wrapWords(strings.Join(bodies, " "), avail)
 		}
-		for _, ln := range strings.Split(wrapped, "\n") {
+		for ln := range strings.SplitSeq(wrapped, "\n") {
 			out = append(out, base.Render(prefix)+styleWithLinks(ln, base, th, plainUI))
 		}
 	}
@@ -256,7 +256,7 @@ func renderPreformattedBlock(lines []string, width int, th Theme, plainUI bool) 
 	out := make([]string, 0, len(lines))
 	for _, ln := range lines {
 		ln = expandTabs(ln, 8)
-		for _, seg := range strings.Split(ansi.Hardwrap(ln, max(1, width), true), "\n") {
+		for seg := range strings.SplitSeq(ansi.Hardwrap(ln, max(1, width), true), "\n") {
 			out = append(out, styleWithLinks(seg, base, th, plainUI))
 		}
 	}
@@ -689,7 +689,7 @@ func hasMeaningfulRenderedHTML(rendered string) bool {
 
 func parseInlineStyle(raw string) map[string]string {
 	declarations := make(map[string]string)
-	for _, declaration := range strings.Split(raw, ";") {
+	for declaration := range strings.SplitSeq(raw, ";") {
 		name, value, ok := strings.Cut(declaration, ":")
 		if !ok {
 			continue
@@ -955,7 +955,7 @@ func tableCellText(cell *goquery.Selection) string {
 		walk(n)
 	}
 	var lines []string
-	for _, line := range strings.Split(out.String(), "\n") {
+	for line := range strings.SplitSeq(out.String(), "\n") {
 		if line = normalizeInlineSpacing(line); line != "" {
 			lines = append(lines, line)
 		}
@@ -1012,7 +1012,7 @@ func renderTextTable(rows [][]string, width int, header bool) []string {
 			if col < len(row) {
 				cell = row[col]
 			}
-			for _, line := range strings.Split(cell, "\n") {
+			for line := range strings.SplitSeq(cell, "\n") {
 				wrapped[col] = append(wrapped[col], strings.Split(ansi.Hardwrap(ansi.Wordwrap(line, columnWidths[col], ""), columnWidths[col], true), "\n")...)
 			}
 			rowHeight = max(rowHeight, len(wrapped[col]))

@@ -741,10 +741,8 @@ func (s *Settings) ensureSectionFieldVisible(section settingsSection) {
 		return
 	}
 	current := s.sectionField[section]
-	for _, f := range fields {
-		if f == current {
-			return
-		}
+	if slices.Contains(fields, current) {
+		return
 	}
 	s.sectionField[section] = fields[0]
 	if s.activeSection == section {
@@ -2412,7 +2410,7 @@ func (b *settingsFormBuilder) addSupportSection() []int {
 		b.markAnchor(supportOpenField(i))
 		buttons, copyRow := b.s.renderSupportButtons(link, i, b.width, b.chrome)
 		b.body.anchors[supportCopyField(i)] = len(b.body.lines) + copyRow
-		for _, line := range strings.Split(buttons, "\n") {
+		for line := range strings.SplitSeq(buttons, "\n") {
 			b.addLine(line)
 		}
 		markGap()
@@ -3780,7 +3778,7 @@ func (s Settings) renderAboutHeroTextLine(text string, width, row int, bold bool
 	}
 
 	var b strings.Builder
-	for i := 0; i < width; i++ {
+	for i := range width {
 		ch := ' '
 		if i < len(runes) {
 			ch = runes[i]

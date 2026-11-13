@@ -453,7 +453,7 @@ func TestSupportCafeBroomSweepsPacManAway(t *testing.T) {
 		resting := int(math.Round(cafeHopAt(cafeHopFrames-1, w, h).x))
 		last := resting
 		contact := false
-		for frame := 0; frame < cafeSweepFrames; frame++ {
+		for frame := range cafeSweepFrames {
 			broom, pac := cafeSweepAt(frame, w, h)
 			if pac < last || pac < resting {
 				t.Fatal("sweep moved Pac-Man backwards")

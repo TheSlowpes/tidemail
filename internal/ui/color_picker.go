@@ -678,10 +678,10 @@ func (m Model) renderHSLField(cp colorPicker, chrome managerChrome) []string {
 	markerRow := int(math.Round((100 - cp.fieldVal) / 100 * float64(hslFieldH-1)))
 
 	lines := make([]string, hslFieldH)
-	for y := 0; y < hslFieldH; y++ {
+	for y := range hslFieldH {
 		sat := 100 - float64(y)/float64(hslFieldH-1)*100
 		var row strings.Builder
-		for x := 0; x < hslFieldW; x++ {
+		for x := range hslFieldW {
 			hue := float64(x) / float64(hslFieldW-1) * 359.999
 			r, g, b := hsvToRGB(hue, sat/100, cp.fieldVal/100)
 			cellBg := lipgloss.Color(fmt.Sprintf("#%02x%02x%02x", r, g, b))

@@ -188,7 +188,7 @@ func TestMailTagsRowsOverflowAndStatusFlags(t *testing.T) {
 		t.Fatalf("mail tag missing from row: %s", view)
 	}
 	tags = append([]annotationTag{{kind: tagReply}}, tags...)
-	for i := 0; i < 8; i++ {
+	for i := range 8 {
 		tags = append(tags, annotationTag{kind: tagMail, category: fmt.Sprintf("project-%d", i)})
 	}
 	chips := layoutTags(tags, "pills", "square", false, 12)

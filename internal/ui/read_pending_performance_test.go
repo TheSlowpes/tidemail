@@ -105,7 +105,7 @@ func TestPendingReadPerformance(t *testing.T) {
 				}
 				go func() {
 					if mode != "idle" {
-						for i := 0; i < events; i++ {
+						for i := range events {
 							time.Sleep(time.Until(stats.sent[i]))
 							packet := []byte("\x1b[B")
 							if mode == "wheel" {
