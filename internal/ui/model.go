@@ -5163,10 +5163,7 @@ func (m *Model) clampMessageListViewport() {
 	}
 	visible := max(1, m.articleRowsVisible())
 	m.messageCursor = clamp(m.messageCursor, 0, max(0, count-1))
-	m.listOffset = clamp(m.listOffset, 0, max(0, count-visible))
-	if m.messageCursor < m.listOffset {
-		m.listOffset = m.messageCursor
-	}
+	m.listOffset = min(m.messageCursor, clamp(m.listOffset, 0, max(0, count-visible)))
 	if m.messageCursor >= m.listOffset+visible {
 		m.listOffset = m.messageCursor - visible + 1
 	}

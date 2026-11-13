@@ -7,8 +7,7 @@ import (
 )
 
 func providerRequestError(provider string, err error) error {
-	var dnsErr *net.DNSError
-	if errors.As(err, &dnsErr) {
+	if dnsErr, ok := errors.AsType[*net.DNSError](err); ok {
 		msg := fmt.Sprintf("%s: DNS lookup failed for %s", provider, dnsErr.Name)
 		if dnsErr.Server != "" {
 			msg += " via " + dnsErr.Server

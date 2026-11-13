@@ -2,6 +2,7 @@ package ui
 
 import (
 	"context"
+	"maps"
 	"time"
 
 	"github.com/allisonhere/tidemail/internal/config"
@@ -343,9 +344,7 @@ func (m *Model) recountMailboxUnread(id int64) error {
 	if len(excluded) > 0 && m.pendingUnreadExcluded == nil {
 		m.pendingUnreadExcluded = make(map[int64]bool)
 	}
-	for messageID, absent := range excluded {
-		m.pendingUnreadExcluded[messageID] = absent
-	}
+	maps.Copy(m.pendingUnreadExcluded, excluded)
 	for i := range m.mailboxes {
 		if m.mailboxes[i].ID == id {
 			m.mailboxes[i].UnreadCount = count

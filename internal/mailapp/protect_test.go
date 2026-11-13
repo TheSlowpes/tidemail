@@ -84,11 +84,11 @@ func TestProtectSignedKeepsTheSignedBytesExact(t *testing.T) {
 
 func boundaryOf(t *testing.T, raw []byte) string {
 	t.Helper()
-	i := bytes.Index(raw, []byte("boundary=\""))
-	if i < 0 {
+	_, after, ok := bytes.Cut(raw, []byte("boundary=\""))
+	if !ok {
 		t.Fatal("no boundary")
 	}
-	rest := raw[i+len("boundary=\""):]
+	rest := after
 	return string(rest[:bytes.IndexByte(rest, '"')])
 }
 

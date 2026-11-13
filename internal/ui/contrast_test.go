@@ -133,7 +133,6 @@ var contrastChecks = []contrastCheck{
 
 func TestAllThemesPassContrastChecks(t *testing.T) {
 	for _, theme := range BuiltinThemes {
-		theme := theme
 		t.Run(theme.Name, func(t *testing.T) {
 			styles := BuildStyles(theme, "comfortable", "square")
 			for _, check := range contrastChecks {
@@ -155,7 +154,6 @@ func TestAllThemesPassContrastChecks(t *testing.T) {
 
 func TestAllThemesContentFocusLineBackgroundIsVisible(t *testing.T) {
 	for _, theme := range BuiltinThemes {
-		theme := theme
 		t.Run(theme.Name, func(t *testing.T) {
 			styles := BuildStyles(theme, "comfortable", "square")
 			focusBg := styleColor(styles.ContentFocusLine.GetBackground())
@@ -171,7 +169,6 @@ func TestAllThemesContentFocusLineBackgroundIsVisible(t *testing.T) {
 
 func TestAllThemesMessageInlineRenderingColorsAreReadable(t *testing.T) {
 	for _, theme := range BuiltinThemes {
-		theme := theme
 		t.Run(theme.Name, func(t *testing.T) {
 			checks := []struct {
 				name     string
@@ -195,7 +192,6 @@ func TestAllThemesMessageInlineRenderingColorsAreReadable(t *testing.T) {
 
 func TestAccountPickerColorsAreReadableOnAllThemeBackgrounds(t *testing.T) {
 	for _, theme := range BuiltinThemes {
-		theme := theme
 		t.Run(theme.Name, func(t *testing.T) {
 			for _, color := range accountColorList {
 				if color.Hex == "" {
@@ -212,7 +208,6 @@ func TestAccountPickerColorsAreReadableOnAllThemeBackgrounds(t *testing.T) {
 
 func TestAllThemesFocusedPaneBorderMeetsContrastFloor(t *testing.T) {
 	for _, theme := range BuiltinThemes {
-		theme := theme
 		t.Run(theme.Name, func(t *testing.T) {
 			styles := BuildStyles(theme, "comfortable", "square")
 			border := styleColor(styles.PaneFrame(true).GetBorderTopForeground())
@@ -228,7 +223,6 @@ func TestAllThemesFocusedPaneBorderMeetsContrastFloor(t *testing.T) {
 
 func TestAllThemesSelectedRowBackgroundStandsOut(t *testing.T) {
 	for _, theme := range BuiltinThemes {
-		theme := theme
 		t.Run(theme.Name, func(t *testing.T) {
 			styles := BuildStyles(theme, "comfortable", "square")
 			selectedBg := styleColor(styles.ArticleSelected.GetBackground())

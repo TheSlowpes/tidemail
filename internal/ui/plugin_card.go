@@ -364,7 +364,7 @@ func (m Model) cardLines(c resultCard, width int, chrome managerChrome) []string
 	statusFg := m.cardStatusColor(c.status, chrome)
 	wrap := func(s string, st lipgloss.Style, indent string) []string {
 		var out []string
-		for _, l := range strings.Split(ansi.Wrap(s, max(1, width-len(indent)), ""), "\n") {
+		for l := range strings.SplitSeq(ansi.Wrap(s, max(1, width-len(indent)), ""), "\n") {
 			out = append(out, st.Render(indent+l))
 		}
 		return out
@@ -377,7 +377,7 @@ func (m Model) cardLines(c resultCard, width int, chrome managerChrome) []string
 	lines = append(lines, style(statusFg).Render(marker)+style(chrome.text).Bold(true).Render(truncate(sanitizePluginLine(c.title), width-2)))
 	if c.summary != "" {
 		lines = append(lines, "")
-		for _, para := range strings.Split(sanitizePluginText(c.summary), "\n") {
+		for para := range strings.SplitSeq(sanitizePluginText(c.summary), "\n") {
 			lines = append(lines, wrap(para, text, "")...)
 		}
 	}

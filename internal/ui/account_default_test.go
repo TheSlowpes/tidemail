@@ -51,7 +51,7 @@ func TestDefaultAccountIsStarredOnce(t *testing.T) {
 	if got := strings.Count(view, "★ [default]"); got != 1 {
 		t.Fatalf("default badge count = %d, want exactly 1:\n%s", got, view)
 	}
-	for _, line := range strings.Split(view, "\n") {
+	for line := range strings.SplitSeq(view, "\n") {
 		if strings.Contains(line, "[default]") && !strings.Contains(line, "Work") {
 			t.Fatalf("the default badge is on the wrong account: %q", strings.TrimSpace(line))
 		}

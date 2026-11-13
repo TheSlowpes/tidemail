@@ -2,7 +2,7 @@ package db
 
 import (
 	"reflect"
-	"sort"
+	"slices"
 	"testing"
 	"time"
 )
@@ -69,7 +69,7 @@ func TestListWaitingCandidatesSkipsExcludedFoldersAndBodies(t *testing.T) {
 			t.Fatalf("candidate missing header data: %+v", m)
 		}
 	}
-	sort.Slice(got, func(i, j int) bool { return got[i] < got[j] })
+	slices.Sort(got)
 	if !reflect.DeepEqual(got, []int64{inbox, sent, archive}) {
 		t.Fatalf("candidate mailboxes = %v", got)
 	}

@@ -317,8 +317,7 @@ func sendMail(client *smtp.Client, from string, to []string, raw []byte) error {
 	}
 	err = w.Close()
 	if err != nil {
-		var response *textproto.Error
-		if !errors.As(err, &response) {
+		if _, ok := errors.AsType[*textproto.Error](err); !ok {
 			return fmt.Errorf("%w: %v", ErrDeliveryUncertain, err)
 		}
 	}
@@ -453,10 +452,7 @@ func buildEntity(msg OutgoingMessage, mailSafe bool) []byte {
 		w, _ := mw.CreatePart(attHdr)
 		encoded := base64.StdEncoding.EncodeToString(att.Data)
 		for i := 0; i < len(encoded); i += 76 {
-			end := i + 76
-			if end > len(encoded) {
-				end = len(encoded)
-			}
+			end := min(i+76, len(encoded))
 			_, _ = w.Write([]byte(encoded[i:end] + "\r\n"))
 		}
 	}
@@ -553,8 +549,7 @@ func CanRetry(err error) bool {
 	if err == nil || errors.Is(err, ErrDeliveryUncertain) {
 		return false
 	}
-	var response *textproto.Error
-	if errors.As(err, &response) {
+	if response, ok := errors.AsType[*textproto.Error](err); ok {
 		return response.Code >= 400 && response.Code < 500
 	}
 	return true

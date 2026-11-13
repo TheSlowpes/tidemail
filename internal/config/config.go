@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
+	"maps"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -99,9 +100,7 @@ func (c *Config) SetPluginAutoEvents(pluginID string, on bool) {
 func (c Config) PluginStoredSettings(pluginID string) map[string]any {
 	stored := c.Plugins[pluginID].Settings
 	out := make(map[string]any, len(stored))
-	for k, v := range stored {
-		out[k] = v
-	}
+	maps.Copy(out, stored)
 	return out
 }
 
@@ -110,9 +109,7 @@ func (c Config) PluginStoredSettings(pluginID string) map[string]any {
 func (c *Config) SetPluginSetting(pluginID, key string, value any) {
 	next, settings := c.clonePlugin(pluginID)
 	values := make(map[string]any, len(settings.Settings)+1)
-	for k, v := range settings.Settings {
-		values[k] = v
-	}
+	maps.Copy(values, settings.Settings)
 	values[key] = value
 	settings.Settings = values
 	next[pluginID] = settings
@@ -121,9 +118,7 @@ func (c *Config) SetPluginSetting(pluginID, key string, value any) {
 
 func (c *Config) clonePlugin(pluginID string) (PluginSettingsMap, PluginSettings) {
 	next := make(PluginSettingsMap, len(c.Plugins)+1)
-	for id, s := range c.Plugins {
-		next[id] = s
-	}
+	maps.Copy(next, c.Plugins)
 	return next, next[pluginID]
 }
 

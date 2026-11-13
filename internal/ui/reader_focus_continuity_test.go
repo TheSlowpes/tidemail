@@ -171,7 +171,7 @@ func TestReaderMixedNavigationActivationSafety(t *testing.T) {
 	for _, highlight := range []bool{false, true} {
 		requests, apply := recordReaderActivations(t)
 		m := readerFocusFixture(t, highlight)
-		for i := 0; i < 100; i++ {
+		for i := range 100 {
 			var event tea.Msg = readerWheel(m, i >= 50)
 			if i%3 == 0 {
 				event = tea.KeyMsg{Type: tea.KeyDown}
@@ -192,7 +192,7 @@ func TestReaderMixedNavigationActivationSafety(t *testing.T) {
 func TestReaderResizeAfterWheel(t *testing.T) {
 	for _, highlight := range []bool{false, true} {
 		m := readerScrollModel(21*1024, 120, 40, highlight)
-		for i := 0; i < 20; i++ {
+		for range 20 {
 			next, _ := m.Update(readerWheel(m, false))
 			m = next.(Model)
 		}

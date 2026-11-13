@@ -172,7 +172,7 @@ func TestComposeBackspaceQueueDrain(t *testing.T) {
 			released := make(chan time.Time, 1)
 			go func() {
 				start := time.Now()
-				for i := 0; i < count; i++ {
+				for i := range count {
 					time.Sleep(time.Until(start.Add(time.Duration(i) * time.Second / 30)))
 					input.bytes <- 127
 				}

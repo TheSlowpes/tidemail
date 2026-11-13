@@ -7,6 +7,7 @@ package ui
 import (
 	"context"
 	"fmt"
+	"maps"
 	"slices"
 	"strings"
 	"time"
@@ -565,9 +566,7 @@ func (m Model) handleFolderRenamed(msg FolderRenamedMsg) (tea.Model, tea.Cmd) {
 		delete(m.collapsedSections, keyPrefix+pair.old)
 		delete(m.collapsedSections, keyPrefix+pair.new)
 	}
-	for name, pref := range moved {
-		prefs[name] = pref
-	}
+	maps.Copy(prefs, moved)
 	for name, o := range msg.Orders {
 		m.setPref(msg.AccountID, name, func(p *db.MailboxPref) { p.Order = o })
 	}

@@ -28,8 +28,8 @@ func composeMouseModel(t *testing.T, w, h int, body string) Model {
 func screenCell(t *testing.T, m Model, word string) (x, y int) {
 	t.Helper()
 	for row, line := range strings.Split(ansi.Strip(m.View()), "\n") {
-		if at := strings.Index(line, word); at >= 0 {
-			return ansi.StringWidth(line[:at]), row
+		if before, _, ok := strings.Cut(line, word); ok {
+			return ansi.StringWidth(before), row
 		}
 	}
 	t.Fatalf("%q not on screen", word)

@@ -22,7 +22,7 @@ func plainComposeHintText(view string) string {
 
 func composeFieldLine(view, label string) string {
 	stripped := ansi.Strip(view)
-	for _, line := range strings.Split(stripped, "\n") {
+	for line := range strings.SplitSeq(stripped, "\n") {
 		if strings.Contains(line, label) {
 			return line
 		}
@@ -33,7 +33,7 @@ func composeFieldLine(view, label string) string {
 // composeRawLine finds a view line by its visible text but returns it with SGR
 // sequences intact, for assertions about colour rather than layout.
 func composeRawLine(view, label string) string {
-	for _, line := range strings.Split(view, "\n") {
+	for line := range strings.SplitSeq(view, "\n") {
 		if strings.Contains(ansi.Strip(line), label) {
 			return line
 		}
@@ -618,7 +618,7 @@ func TestComposeBodyCaretFollowsTypingAboveQuote(t *testing.T) {
 	// Reply-shaped body: a long quote below, caret moved to the top.
 	var quote strings.Builder
 	quote.WriteString("\n\n")
-	for i := 0; i < 40; i++ {
+	for i := range 40 {
 		fmt.Fprintf(&quote, "> QUOTED%02d\n", i)
 	}
 	m.overlay = overlayCompose
@@ -629,7 +629,7 @@ func TestComposeBodyCaretFollowsTypingAboveQuote(t *testing.T) {
 	m.compose.bodyInput, _ = m.compose.bodyInput.Update(tea.KeyMsg{Type: tea.KeyCtrlHome})
 
 	// Type a few reply lines at the top.
-	for i := 0; i < 4; i++ {
+	for i := range 4 {
 		mm, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune(fmt.Sprintf("MYREPLY%02d", i))})
 		m = mm.(Model)
 		mm, _ = m.Update(tea.KeyMsg{Type: tea.KeyEnter})
@@ -640,7 +640,7 @@ func TestComposeBodyCaretFollowsTypingAboveQuote(t *testing.T) {
 		t.Fatalf("typing at the top of a reply should not scroll the body (viewportTop=%d)", top)
 	}
 	view := ansi.Strip(m.View())
-	for i := 0; i < 4; i++ {
+	for i := range 4 {
 		if marker := fmt.Sprintf("MYREPLY%02d", i); !strings.Contains(view, marker) {
 			t.Fatalf("typed reply line %q scrolled off the top of the body", marker)
 		}
@@ -1343,7 +1343,7 @@ func TestComposeSignatureFooterSurvivesNarrowLayout(t *testing.T) {
 		if width >= 74 && !strings.Contains(view, "^u sender") {
 			t.Fatalf("sender hint dropped at width %d: %s", width, view)
 		}
-		for _, line := range strings.Split(view, "\n") {
+		for line := range strings.SplitSeq(view, "\n") {
 			if lipgloss.Width(line) > width {
 				t.Fatalf("view exceeds width %d: %q", width, line)
 			}

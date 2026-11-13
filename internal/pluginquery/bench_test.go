@@ -44,7 +44,7 @@ func benchHarness(b *testing.B, n int) *harness {
 		b.Fatal(err)
 	}
 	categories := []string{"work", "github", "newsletter", "billing", "personal"}
-	for i := 0; i < n; i++ {
+	for i := range n {
 		thread, pos := i/4, i%4
 		fromMe := pos%2 == 1
 		mailbox, from, to := inbox, fmt.Sprintf("Person %d <p%d@d%d.example>", thread%500, thread%500, thread%40), "me@example.com"

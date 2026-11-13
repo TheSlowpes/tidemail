@@ -90,7 +90,7 @@ func TestDeleteAccountFTSCleanupIsAtomicAndScoped(t *testing.T) {
 			}
 			defer d.Close()
 			var accounts, ids []int64
-			for i := 0; i < 2; i++ {
+			for i := range 2 {
 				account, err := d.AddAccount(fmt.Sprint(i), fmt.Sprint(i), "")
 				if err != nil {
 					t.Fatal(err)

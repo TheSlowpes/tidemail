@@ -106,7 +106,7 @@ func BenchmarkSetViewportThread(b *testing.B) {
 			m := benchModel(b)
 			html := benchHTMLBody(21 * 1024)
 			thread := messageThread{Key: "t", Count: size}
-			for i := 0; i < size; i++ {
+			for i := range size {
 				thread.Messages = append(thread.Messages, benchMessage(int64(i+1), html))
 			}
 			thread.Representative = thread.Messages[0]

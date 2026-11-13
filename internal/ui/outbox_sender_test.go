@@ -2,6 +2,7 @@ package ui
 
 import (
 	"encoding/json"
+	"slices"
 	"testing"
 
 	"github.com/allisonhere/tidemail/internal/config"
@@ -121,12 +122,7 @@ func TestQueuedMessageStoresNoSender(t *testing.T) {
 }
 
 func containsHeader(raw, header string) bool {
-	for _, line := range splitLines(raw) {
-		if line == header {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(splitLines(raw), header)
 }
 
 func splitLines(raw string) []string {

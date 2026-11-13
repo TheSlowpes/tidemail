@@ -28,7 +28,7 @@ func parseComposeMailto(target string) (mailtoFields, error) {
 		return f, fmt.Errorf("invalid mailto recipient encoding")
 	}
 	fields := map[string][]string{}
-	for _, part := range strings.Split(u.RawQuery, "&") {
+	for part := range strings.SplitSeq(u.RawQuery, "&") {
 		key, value, _ := strings.Cut(part, "=")
 		key, err = url.PathUnescape(key)
 		if err != nil {

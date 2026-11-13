@@ -48,7 +48,7 @@ func driftBlocks(t *testing.T, doc, name string) []string {
 // lines returns the non-empty trimmed lines of a block.
 func lines(block string) []string {
 	var out []string
-	for _, l := range strings.Split(block, "\n") {
+	for l := range strings.SplitSeq(block, "\n") {
 		if l = strings.TrimSpace(l); l != "" {
 			out = append(out, l)
 		}

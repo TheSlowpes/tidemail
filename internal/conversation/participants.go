@@ -57,7 +57,7 @@ func ParseParticipants(fields ...string) []Participant {
 			// itself held a comma ("Merk, Philipp <p@x>"): carry it into the
 			// next piece instead of dropping it.
 			carry := ""
-			for _, part := range strings.Split(f, ",") {
+			for part := range strings.SplitSeq(f, ",") {
 				if carry != "" {
 					part = carry + "," + part
 				}

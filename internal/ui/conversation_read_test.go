@@ -300,7 +300,7 @@ func TestConversationReadExplicitSelectionPrecedesRowScope(t *testing.T) {
 				t.Fatal("explicit toggles or no-advance semantics changed")
 			}
 			done := readRemoteResults(cmd)
-			for i := 0; i < 2; i++ {
+			for range 2 {
 				awaitReadStore(t, entered)
 				release <- nil
 			}
@@ -383,7 +383,7 @@ func TestConversationReadUnifiedMailboxBatchesAndPartialFailure(t *testing.T) {
 			}
 			done := readRemoteResults(cmd)
 			seen := map[string]bool{}
-			for i := 0; i < 2; i++ {
+			for i := range 2 {
 				awaitReadStore(t, entered)
 				got := <-calls
 				if seen[got.account] || got.read == partial {

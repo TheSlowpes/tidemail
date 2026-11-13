@@ -252,8 +252,7 @@ func runReportQueries(ctx context.Context, exec QueryExecutor, queries []Query, 
 		}
 		value, err := exec.ExecuteQuery(ctx, q, rc)
 		if err != nil {
-			var qe *QueryError
-			if errors.As(err, &qe) {
+			if qe, ok := errors.AsType[*QueryError](err); ok {
 				if qe.Name == "" {
 					qe.Name = q.Name
 				}

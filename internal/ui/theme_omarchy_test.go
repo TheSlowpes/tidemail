@@ -45,7 +45,6 @@ var hostilePalettes = map[string]omarchy.Palette{
 
 func TestOmarchyThemePassesContrastChecks(t *testing.T) {
 	for name, p := range hostilePalettes {
-		p := p
 		t.Run(name, func(t *testing.T) {
 			theme := contrastCorrectTheme(omarchyTheme(p))
 			styles := BuildStyles(theme, "comfortable", "square")
@@ -77,7 +76,6 @@ func TestOmarchyThemePassesContrastChecks(t *testing.T) {
 
 func TestOmarchyThemeInlineMessageColorsAreReadable(t *testing.T) {
 	for name, p := range hostilePalettes {
-		p := p
 		t.Run(name, func(t *testing.T) {
 			theme := contrastCorrectTheme(omarchyTheme(p))
 			checks := []struct {

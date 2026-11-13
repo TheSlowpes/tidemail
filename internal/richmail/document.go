@@ -261,7 +261,7 @@ func attr(sel *goquery.Selection, names ...string) string {
 
 func parseStyle(raw string) map[string]string {
 	out := map[string]string{}
-	for _, decl := range strings.Split(raw, ";") {
+	for decl := range strings.SplitSeq(raw, ";") {
 		name, value, ok := strings.Cut(decl, ":")
 		if !ok {
 			continue

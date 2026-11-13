@@ -108,11 +108,11 @@ func (b *KittyBackend) PlaceholderRows(id uint32, cols, rows int) []string {
 		return nil
 	}
 	out := make([]string, rows)
-	for r := 0; r < rows; r++ {
+	for r := range rows {
 		var sb strings.Builder
 		sb.Grow(cols*4 + 16)
 		fmt.Fprintf(&sb, "\x1b[38;5;%dm", low)
-		for c := 0; c < cols; c++ {
+		for c := range cols {
 			sb.WriteRune(placeholderRune)
 			sb.WriteRune(rowColumnDiacritics[r])
 			sb.WriteRune(rowColumnDiacritics[c])
@@ -131,10 +131,7 @@ func kittyUpload(control string, data []byte) []byte {
 	var out bytes.Buffer
 	first := true
 	for len(encoded) > 0 {
-		n := kittyChunkSize
-		if n > len(encoded) {
-			n = len(encoded)
-		}
+		n := min(kittyChunkSize, len(encoded))
 		chunk := encoded[:n]
 		encoded = encoded[n:]
 		more := 0

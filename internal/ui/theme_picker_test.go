@@ -150,7 +150,7 @@ func TestMatchOmarchyIsListedWithoutASwatch(t *testing.T) {
 	// The vt52 theme draws swatches as '#', which makes them easy to find in plain text.
 	m.styles = BuildStyles(VT52, "comfortable", "square")
 	var row string
-	for _, line := range strings.Split(ansi.Strip(m.renderThemePicker(46, 26)), "\n") {
+	for line := range strings.SplitSeq(ansi.Strip(m.renderThemePicker(46, 26)), "\n") {
 		if strings.Contains(line, ThemeNameMatchOmarchy) {
 			row = line
 		}

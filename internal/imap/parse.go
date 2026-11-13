@@ -407,7 +407,7 @@ func parseAuthHeaders(raw []byte) string {
 	if v := hdr.Get("DKIM-Signature"); v != "" {
 		// Extract d= tag if present
 		domain := ""
-		for _, part := range strings.Split(v, ";") {
+		for part := range strings.SplitSeq(v, ";") {
 			kv := strings.SplitN(strings.TrimSpace(part), "=", 2)
 			if len(kv) == 2 && strings.TrimSpace(kv[0]) == "d" {
 				domain = strings.TrimSpace(kv[1])

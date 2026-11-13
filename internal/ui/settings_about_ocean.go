@@ -297,7 +297,7 @@ func oceanMoonAt(c *sceneCanvas, f float64, cx, cyPx int) {
 		return
 	}
 	mx, my := float64(cx), float64(cyPx)
-	for y := 0; y < 8; y++ {
+	for y := range 8 {
 		for x := cx - 9; x < cx+9; x++ {
 			d := math.Hypot(float64(x)-mx, float64(y*2+1)-my)
 			if p := c.at(x, y); p != nil && d < 9 {
@@ -331,7 +331,7 @@ func oceanShootingStar(c *sceneCanvas, f float64, skyRows int, inContent func(in
 	}
 	sx := c.w/6 + int(sceneRand(n*13+1)*float64(c.w)*0.5)
 	sy := 1 + int(sceneRand(n*13+2)*float64(max(1, skyRows/4)))
-	for k := 0; k < 8; k++ {
+	for k := range 8 {
 		pos := cyc - k
 		x, y := sx+pos*3, sy+pos
 		if pos < 0 || y >= skyRows-1 || inContent(x, y) {
@@ -400,8 +400,8 @@ func oceanButtons(c *sceneCanvas, y int, focused settingsField, fade float64) {
 	for _, b := range oceanLinkButtons {
 		bw := b.inner + 2
 		on := b.field == focused
-		for dy := 0; dy < 3; dy++ {
-			for dx := 0; dx < bw; dx++ {
+		for dy := range 3 {
+			for dx := range bw {
 				p := c.at(x+dx, y+dy)
 				if p == nil {
 					continue

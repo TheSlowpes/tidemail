@@ -646,7 +646,7 @@ func (db *DB) ListAddresses() ([]string, error) {
 			return addrs, err
 		}
 		// Split comma-separated addresses
-		for _, part := range strings.Split(a, ",") {
+		for part := range strings.SplitSeq(a, ",") {
 			part = strings.TrimSpace(part)
 			if part != "" {
 				addrs = append(addrs, part)
