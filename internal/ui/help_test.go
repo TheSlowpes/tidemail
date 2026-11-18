@@ -344,7 +344,7 @@ func TestHelpTwoPaneRendersBothPanes(t *testing.T) {
 		if !strings.Contains(view, "Status bar") || !strings.Contains(view, "Global") || !strings.Contains(view, "│") {
 			t.Errorf("%v: expected a category list and divider:\n%s", size, view)
 		}
-		for _, line := range strings.Split(view, "\n") {
+		for line := range strings.SplitSeq(view, "\n") {
 			if w := len([]rune(line)); w > size[0] {
 				t.Errorf("%v: line wider than the terminal (%d): %q", size, w, line)
 			}

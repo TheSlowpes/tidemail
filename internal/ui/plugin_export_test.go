@@ -39,7 +39,7 @@ func TestReportPlainTextBodyAndView(t *testing.T) {
 	if strings.Contains(view, "\x1b") || !strings.Contains(view, "1234") || !strings.Contains(strings.ToLower(view), "received") {
 		t.Errorf("view text = %q", view)
 	}
-	for _, l := range strings.Split(view, "\n") {
+	for l := range strings.SplitSeq(view, "\n") {
 		if len([]rune(l)) > reportExportWidth+2 {
 			t.Errorf("line too wide (%d): %q", len([]rune(l)), l)
 		}

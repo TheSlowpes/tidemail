@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"slices"
 	"sort"
 
 	"github.com/allisonhere/tidemail/internal/conversation"
@@ -155,10 +156,8 @@ func (m *Model) preserveCollapsedReadSelection(readIDs []int64) bool {
 	}
 	thread := m.currentParentThread()
 	for _, member := range thread.Messages {
-		for _, id := range readIDs {
-			if member.ID == id {
-				return true
-			}
+		if slices.Contains(readIDs, member.ID) {
+			return true
 		}
 	}
 	return m.rowReadPending(thread.Representative, *thread)

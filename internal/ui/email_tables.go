@@ -127,7 +127,7 @@ func tableNumericColumns(rows [][]string, cols int, header bool) []bool {
 	if header {
 		start = 1
 	}
-	for col := 0; col < cols; col++ {
+	for col := range cols {
 		seen, valid := false, true
 		for _, row := range rows[start:] {
 			if col >= len(row) || strings.TrimSpace(row[col]) == "" {

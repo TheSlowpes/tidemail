@@ -26,7 +26,7 @@ func resultText(m Model, r *pluginResult) string {
 
 // hasFact reports a card row "label ... value".
 func hasFact(text, label, value string) bool {
-	for _, l := range strings.Split(text, "\n") {
+	for l := range strings.SplitSeq(text, "\n") {
 		l = strings.TrimSpace(l)
 		if rest, ok := strings.CutPrefix(l, label+" "); ok && strings.TrimSpace(rest) == value {
 			return true

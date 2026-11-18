@@ -3,6 +3,7 @@ package ui
 import (
 	"math"
 	"regexp"
+	"slices"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -251,10 +252,8 @@ func looksHardWrappedProse(body []string) bool {
 	if float64(lipgloss.Width(body[len(body)-1])) > mean+sd {
 		return false
 	}
-	for _, ln := range body {
-		if columnGapRe.MatchString(ln) {
-			return false
-		}
+	if slices.ContainsFunc(body, columnGapRe.MatchString) {
+		return false
 	}
 	// Prose is letter-dominated. Timestamped log lines are often uniform width
 	// with low symbol density, so without this they read as wrapped prose.

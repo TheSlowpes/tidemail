@@ -22,7 +22,7 @@ func TestIncrementalPagesBoundBodiesAndCoverBacklog(t *testing.T) {
 	}
 	defer c.Close()
 	known := map[uint32]bool{}
-	for page := 0; page < 4; page++ {
+	for page := range 4 {
 		msgs, more, err := c.FetchSincePage(ctx, "INBOX", time.Now().Add(-24*time.Hour), 2, known)
 		if err != nil {
 			t.Fatal(err)
@@ -94,7 +94,7 @@ func TestIncrementalPagesIncludeOldDatedMoves(t *testing.T) {
 	defer c.Close()
 	known := map[uint32]bool{1: true}
 	// All message dates precede this watermark, as with a moved older message.
-	for page := 0; page < 3; page++ {
+	for page := range 3 {
 		msgs, more, err := c.FetchSincePage(ctx, "INBOX", time.Now().Add(48*time.Hour), 2, known)
 		if err != nil || len(msgs) != 2 || more != (page < 2) {
 			t.Fatalf("page %d: %v more=%v err=%v", page, msgs, more, err)

@@ -844,7 +844,7 @@ func (m Model) pluginResultLines(bodyW int, chrome managerChrome) []string {
 		for _, l := range res.details {
 			// sanitizePluginText keeps indentation; fields were sanitized as the
 			// details were built.
-			for _, part := range strings.Split(ansi.Wrap(strings.ReplaceAll(sanitizePluginText(l), "\n", " "), bodyW, ""), "\n") {
+			for part := range strings.SplitSeq(ansi.Wrap(strings.ReplaceAll(sanitizePluginText(l), "\n", " "), bodyW, ""), "\n") {
 				lines = append(lines, base.Foreground(chrome.text).Render(part))
 			}
 		}
@@ -863,7 +863,7 @@ func (m Model) pluginResultLines(bodyW int, chrome managerChrome) []string {
 	}
 	lines = append(lines, base.Foreground(chrome.muted).Render(truncate(heading, bodyW)))
 	if res.annotationNote != "" {
-		for _, part := range strings.Split(ansi.Wrap(res.annotationNote, bodyW, ""), "\n") {
+		for part := range strings.SplitSeq(ansi.Wrap(res.annotationNote, bodyW, ""), "\n") {
 			lines = append(lines, base.Foreground(chrome.muted).Render(part))
 		}
 	}
@@ -876,8 +876,8 @@ func (m Model) pluginResultLines(bodyW int, chrome managerChrome) []string {
 		body = "plugin completed with no data"
 	}
 	textStyle := base.Foreground(chrome.text)
-	for _, line := range strings.Split(body, "\n") {
-		for _, part := range strings.Split(ansi.Wrap(line, bodyW, ""), "\n") {
+	for line := range strings.SplitSeq(body, "\n") {
+		for part := range strings.SplitSeq(ansi.Wrap(line, bodyW, ""), "\n") {
 			lines = append(lines, textStyle.Render(part))
 		}
 	}
@@ -925,7 +925,7 @@ func (m Model) displayPluginErrorLines(err error) []string {
 		s = strings.ReplaceAll(s, m.plugins.dir, "plugins")
 	}
 	var out []string
-	for _, part := range strings.Split(sanitizePluginText(s), "\n") {
+	for part := range strings.SplitSeq(sanitizePluginText(s), "\n") {
 		part = strings.Join(strings.Fields(part), " ")
 		if part == "" {
 			continue
@@ -936,7 +936,7 @@ func (m Model) displayPluginErrorLines(err error) []string {
 			continue
 		}
 		out = append(out, head+"unknown keys:")
-		for _, k := range strings.Split(keys, ", ") {
+		for k := range strings.SplitSeq(keys, ", ") {
 			out = append(out, "  • "+k)
 		}
 		out = append(out, "this TideMail may be older than the plugin; update TideMail or the plugin")

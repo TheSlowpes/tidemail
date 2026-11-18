@@ -105,7 +105,7 @@ func TestImportedDraftPreservesAttachmentsThroughCompose(t *testing.T) {
 	m := NewModel(database, cfg, "dev", false)
 	m.accounts = []db.Account{{ID: aid, Name: name}}
 	m.mailboxes = []db.Mailbox{{ID: mid, AccountID: aid, Name: "Drafts"}}
-	for i := 0; i < 2; i++ {
+	for range 2 {
 		result := m.importRemoteDraftsCmd(mid)().(DraftsLoadedMsg)
 		if result.Err != nil || len(result.Drafts) != 1 {
 			t.Fatalf("draft import: %+v", result)

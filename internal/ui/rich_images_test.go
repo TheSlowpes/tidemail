@@ -57,8 +57,8 @@ func flushImageUploads(t *testing.T, m *Model) bool {
 func pngDataURI(t *testing.T, w, h int) string {
 	t.Helper()
 	img := image.NewRGBA(image.Rect(0, 0, w, h))
-	for y := 0; y < h; y++ {
-		for x := 0; x < w; x++ {
+	for y := range h {
+		for x := range w {
 			img.Set(x, y, color.RGBA{R: uint8(x), G: uint8(y), B: 90, A: 255})
 		}
 	}
@@ -88,7 +88,7 @@ func TestGraphicsRendersRasterPlaceholders(t *testing.T) {
 	if place.Cols > 70 || place.Cols < 1 || place.Rows < 1 {
 		t.Fatalf("placement out of bounds: %+v", place)
 	}
-	for _, line := range strings.Split(res.body, "\n") {
+	for line := range strings.SplitSeq(res.body, "\n") {
 		if w := ansi.StringWidth(line); w > 70 {
 			t.Fatalf("line width %d exceeds 70: %q", w, ansi.Strip(line))
 		}
@@ -291,7 +291,7 @@ func TestResidentImagesStayWithinBudget(t *testing.T) {
 	m, sink := graphicsModel(t)
 	uri := pngDataURI(t, 64, 64)
 	var last []renderImage
-	for i := 0; i < maxResidentImages+10; i++ {
+	for i := range maxResidentImages + 10 {
 		res := m.renderMessageForDisplay(db.Message{ID: int64(1000 + i), BodyHTML: `<img src="` + uri + `" alt="Pic">`}, 70)
 		m.applyViewportImages(res.images)
 		flushImageUploads(t, &m)
@@ -536,7 +536,7 @@ func TestTableWithTwoImagesRendersBoth(t *testing.T) {
 	if len(res.images) != 2 {
 		t.Fatalf("expected both table images to render, got %d (body=%q)", len(res.images), ansi.Strip(res.body))
 	}
-	for _, line := range strings.Split(res.body, "\n") {
+	for line := range strings.SplitSeq(res.body, "\n") {
 		if w := ansi.StringWidth(line); w > 70 {
 			t.Fatalf("line width %d exceeds 70: %q", w, ansi.Strip(line))
 		}
@@ -623,7 +623,7 @@ func TestConversationConsentCoversOnlyDisplayedMessage(t *testing.T) {
 func TestRemoteCacheIsBounded(t *testing.T) {
 	store := newUIImageStore("auto")
 	payload := make([]byte, 1<<20) // 1 MiB each
-	for i := 0; i < 40; i++ {
+	for i := range 40 {
 		store.recordRemote(fmt.Sprintf("https://example.com/%d.png", i), &remoteEntry{data: payload, done: true})
 	}
 
@@ -650,7 +650,7 @@ func TestRemoteCacheIsBounded(t *testing.T) {
 func TestApplyRemoteResultsIsBounded(t *testing.T) {
 	store := newUIImageStore("auto")
 	results := make([]remoteFetchResult, 0, maxRemoteCacheEntries+50)
-	for i := 0; i < maxRemoteCacheEntries+50; i++ {
+	for i := range maxRemoteCacheEntries + 50 {
 		results = append(results, remoteFetchResult{url: fmt.Sprintf("https://example.com/%d.png", i)})
 	}
 	store.applyRemoteResults(remoteImagesLoadedMsg{messageID: 1, results: results})
@@ -731,7 +731,7 @@ func TestRemoteEvictionUsesDecodedImageOrOffersReload(t *testing.T) {
 	if len(m.renderMessageForDisplay(msg, 60).images) != 1 {
 		t.Fatal("initial image did not render")
 	}
-	for i := 0; i < maxRemoteCacheEntries; i++ {
+	for i := range maxRemoteCacheEntries {
 		m.images.recordRemote(fmt.Sprint(i), &remoteEntry{done: true})
 	}
 	if len(m.renderMessageForDisplay(msg, 60).images) != 1 {

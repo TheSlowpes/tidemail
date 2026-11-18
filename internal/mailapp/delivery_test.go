@@ -118,8 +118,7 @@ func TestConcurrentDeliveryAndFutureScheduling(t *testing.T) {
 	}
 	var wg sync.WaitGroup
 	for range 10 {
-		wg.Add(1)
-		go func() { defer wg.Done(); d.Deliver(context.Background(), database, nil, id, a, false, nil) }()
+		wg.Go(func() { ; d.Deliver(context.Background(), database, nil, id, a, false, nil) })
 	}
 	wg.Wait()
 	if calls.Load() != 1 {

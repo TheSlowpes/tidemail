@@ -46,7 +46,7 @@ func TestFormatArticleParagraphKeepsEveryLine(t *testing.T) {
 						body = line
 					}
 				}
-				for _, word := range strings.Fields(body) {
+				for word := range strings.FieldsSeq(body) {
 					if !strings.Contains(got, word) {
 						t.Fatalf("dropped %q from input line %q\ngot: %q", word, line, got)
 					}

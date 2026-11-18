@@ -30,8 +30,7 @@ func (e *SignatureHTMLError) Error() string {
 
 // SignatureHTMLReason is the short, path-free reason for err.
 func SignatureHTMLReason(err error) string {
-	var se *SignatureHTMLError
-	if errors.As(err, &se) {
+	if se, ok := errors.AsType[*SignatureHTMLError](err); ok {
 		return se.Reason
 	}
 	return err.Error()

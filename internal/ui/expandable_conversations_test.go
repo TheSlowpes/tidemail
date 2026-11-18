@@ -234,7 +234,7 @@ func TestExpandableRendering(t *testing.T) {
 					if strings.Contains(view, "(3)") {
 						t.Fatal("message count")
 					}
-					for _, line := range strings.Split(view, "\n") {
+					for line := range strings.SplitSeq(view, "\n") {
 						if lipgloss.Width(line) > m.messagesPaneContentWidth()+2 {
 							t.Fatalf("row overflow: %q", line)
 						}
@@ -253,10 +253,10 @@ func TestExpandableRendering(t *testing.T) {
 							t.Fatalf("tree columns:\n%s", view)
 						}
 						var subjectColumns []int
-						for _, line := range strings.Split(view, "\n") {
+						for line := range strings.SplitSeq(view, "\n") {
 							for _, subject := range []string{"Subject6", "├─ Subject5", "└─ Subject4", "Subject3"} {
-								if at := strings.Index(line, subject); at >= 0 {
-									subjectColumns = append(subjectColumns, lipgloss.Width(line[:at]))
+								if before, _, ok := strings.Cut(line, subject); ok {
+									subjectColumns = append(subjectColumns, lipgloss.Width(before))
 								}
 							}
 						}
@@ -271,7 +271,7 @@ func TestExpandableRendering(t *testing.T) {
 						if !plain {
 							probe := lipgloss.NewStyle().Foreground(messageMutedColor(m.styles.Theme)).Render("x")
 							muted := regexp.MustCompile(`38;2;[0-9]+;[0-9]+;[0-9]+`).FindString(probe)
-							for _, line := range strings.Split(raw, "\n") {
+							for line := range strings.SplitSeq(raw, "\n") {
 								if strings.Contains(ansi.Strip(line), "Subject5") && (muted == "" || !strings.Contains(line, muted)) {
 									t.Fatal("tree connector lost muted color")
 								}

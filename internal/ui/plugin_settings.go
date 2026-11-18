@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"maps"
 	"strings"
 	"sync"
 
@@ -61,9 +62,7 @@ func (s *pluginSettingsSource) StoredSettings(pluginID string) map[string]any {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	out := make(map[string]any, len(s.stored[pluginID]))
-	for k, v := range s.stored[pluginID] {
-		out[k] = v
-	}
+	maps.Copy(out, s.stored[pluginID])
 	return out
 }
 
@@ -472,7 +471,7 @@ func (m Model) pluginSettingsContent(bodyW int, chrome managerChrome) ([]string,
 		in.PlaceholderStyle = muted
 		lines = append(lines, text.Render("new value: ")+in.View())
 	} else if st.cursor < len(rows) && rows[st.cursor].kind == rowSetting && rows[st.cursor].spec.Help != "" {
-		for _, part := range strings.Split(ansi.Wrap(sanitizePluginLine(rows[st.cursor].spec.Help), bodyW, ""), "\n") {
+		for part := range strings.SplitSeq(ansi.Wrap(sanitizePluginLine(rows[st.cursor].spec.Help), bodyW, ""), "\n") {
 			lines = append(lines, muted.Render(part))
 		}
 	}

@@ -17,6 +17,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 
@@ -83,12 +84,7 @@ var knownEvents = map[string]bool{EventMessageReceived: true}
 
 // WantsEvent reports whether the manifest declares event.
 func (m Manifest) WantsEvent(event string) bool {
-	for _, e := range m.Events {
-		if e == event {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(m.Events, event)
 }
 
 // ParseManifest decodes and validates manifest TOML. Unknown keys are

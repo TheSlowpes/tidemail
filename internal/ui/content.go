@@ -176,10 +176,7 @@ func (m Model) renderAttachmentListFor(atts []db.Attachment, width int) string {
 		paddedSize := fmt.Sprintf("%*s", maxSizeLen, sizeStr)
 		// Right-align size by padding to column end
 		used := ansi.StringWidth(iconStyled) + ansi.StringWidth(name)
-		pad := width - used - maxSizeLen - 2
-		if pad < 1 {
-			pad = 1
-		}
+		pad := max(width-used-maxSizeLen-2, 1)
 		line := iconStyled + body.Render(name+strings.Repeat(" ", pad)) + dimmed.Render(paddedSize)
 		lines = append(lines, line)
 	}
@@ -832,7 +829,7 @@ func (m *Model) pageContent(dir int) {
 		m.reconcileContentFocus(dir)
 		return
 	}
-	for i := 0; i < n; i++ {
+	for range n {
 		before, pending := m.contentFocusLine, m.contentFocusPending
 		m.moveContentFocusLine(dir)
 		if m.contentFocusLine == before && m.contentFocusPending == pending {

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"maps"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,7 +16,7 @@ import (
 
 // Report helpers answer report.run like a plugin would.
 func init() {
-	for name, h := range map[string]func(){
+	maps.Copy(helpers, map[string]func(){
 		"tidemail-plugin-report":      helperReport,
 		"tidemail-plugin-report-loop": reportHelper(func(ReportRequest) any { return queriesOf(`{"v":{"method":"analytics.attention"}}`, nil) }),
 		"tidemail-plugin-report-both": reportHelper(func(ReportRequest) any {
@@ -34,9 +35,7 @@ func init() {
 		"tidemail-plugin-report-invalid": reportHelper(func(ReportRequest) any {
 			return queriesOf(`{"m":{"method":"query.messages","scope":"inbox","fields":["body"]}}`, nil)
 		}),
-	} {
-		helpers[name] = h
-	}
+	})
 }
 
 func rawJSON(s string) json.RawMessage { return json.RawMessage(s) }

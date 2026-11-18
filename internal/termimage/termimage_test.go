@@ -140,8 +140,8 @@ func TestKittyPlaceholderRejectsInvalid(t *testing.T) {
 func TestKittyTransmitAndDelete(t *testing.T) {
 	b := NewKittyBackend(Capabilities{Protocol: ProtocolKitty})
 	img := image.NewRGBA(image.Rect(0, 0, 4, 4))
-	for y := 0; y < 4; y++ {
-		for x := 0; x < 4; x++ {
+	for y := range 4 {
+		for x := range 4 {
 			img.Set(x, y, color.RGBA{R: 10, G: 20, B: 30, A: 255})
 		}
 	}
@@ -231,7 +231,7 @@ func TestKittyTransmitRejectsBadID(t *testing.T) {
 func TestAllocatorInRangeAndDistinct(t *testing.T) {
 	a := NewIDAllocator()
 	seen := map[uint32]bool{}
-	for i := 0; i < 1000; i++ {
+	for range 1000 {
 		id := a.Next()
 		low, hi, ok := idParts(id)
 		if !ok || low < 1 || low > 255 || hi < 0 || hi > MaxGridValue {

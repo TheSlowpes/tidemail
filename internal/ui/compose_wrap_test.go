@@ -54,7 +54,7 @@ func TestComposeWordWrapAcrossConstructors(t *testing.T) {
 	e.SetSize(10, 8)
 	e.Blur()
 	e.SetValue("hello world again")
-	if row := strings.Split(ansi.Strip(e.View()), "\n")[0]; strings.TrimSpace(row) != "hello worl" {
+	if row, _, _ := strings.Cut(ansi.Strip(e.View()), "\n"); strings.TrimSpace(row) != "hello worl" {
 		t.Fatalf("word wrap off still wraps by word: %q", row)
 	}
 }
@@ -134,7 +134,7 @@ func TestComposeWordWrapReflowPreservesDraft(t *testing.T) {
 		if e.ed.CursorIndex() != cursor {
 			t.Fatal("reflow moved caret")
 		}
-		for _, row := range strings.Split(e.View(), "\n") {
+		for row := range strings.SplitSeq(e.View(), "\n") {
 			if ansi.StringWidth(row) > bw {
 				t.Fatal("editor exceeds body width")
 			}

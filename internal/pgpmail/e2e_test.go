@@ -104,7 +104,7 @@ func trustAll(t *testing.T) {
 		t.Fatal(err)
 	}
 	var trust strings.Builder
-	for _, line := range strings.Split(string(out), "\n") {
+	for line := range strings.SplitSeq(string(out), "\n") {
 		if f := strings.Split(line, ":"); len(f) > 9 && f[0] == "fpr" {
 			trust.WriteString(f[9] + ":6:\n")
 		}

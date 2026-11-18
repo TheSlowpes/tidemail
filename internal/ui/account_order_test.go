@@ -191,7 +191,7 @@ func TestShiftMovesAtTheEndsAreNoops(t *testing.T) {
 		t.Fatalf("order = %s, want it unchanged at the top", got)
 	}
 
-	for i := 0; i < 2; i++ {
+	for range 2 {
 		next, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'j'}})
 		m = next.(Model)
 	}

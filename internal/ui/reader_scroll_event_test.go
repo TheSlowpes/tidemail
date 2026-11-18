@@ -183,7 +183,7 @@ func TestReaderScrollEventQueueDrain(t *testing.T) {
 			// position that could conceal discarded input at a document boundary.
 			reference := m
 			var expected []readerScrollState
-			for i := 0; i < count; i++ {
+			for range count {
 				next, _ := reference.Update(event)
 				reference = next.(Model)
 				expected = append(expected, scrollState(reference))
@@ -193,7 +193,7 @@ func TestReaderScrollEventQueueDrain(t *testing.T) {
 			released := make(chan time.Time, 1)
 			go func() {
 				start := time.Now()
-				for i := 0; i < count; i++ {
+				for i := range count {
 					time.Sleep(time.Until(start.Add(time.Duration(i) * time.Second / time.Duration(tc.rate))))
 					stats.sent[i] = time.Now()
 					input.packets <- packet

@@ -1,6 +1,7 @@
 package pluginquery
 
 import (
+	"slices"
 	"sort"
 	"strings"
 	"time"
@@ -323,7 +324,7 @@ func stats(samples []int64) (n int, median, average int64) {
 	if len(samples) == 0 {
 		return 0, 0, 0
 	}
-	sort.Slice(samples, func(i, j int) bool { return samples[i] < samples[j] })
+	slices.Sort(samples)
 	var sum int64
 	for _, s := range samples {
 		sum += s

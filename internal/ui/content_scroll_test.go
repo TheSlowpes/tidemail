@@ -15,7 +15,7 @@ func scrollModel(body int) Model {
 	m := NewModel(nil, config.DefaultConfig(), "dev", false)
 	m.width, m.height = 100, 30
 	lines := []string{"Subject line", "From: someone", ""}
-	for i := 0; i < body; i++ {
+	for i := range body {
 		lines = append(lines, fmt.Sprintf("body line %d", i))
 	}
 	m.contentLines = lines
